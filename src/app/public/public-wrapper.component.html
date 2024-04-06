@@ -1,0 +1,12 @@
+<mat-toolbar color="primary">
+  <span>Weather App</span>
+  <span class="spacer"></span>
+  <nav>
+    <a mat-button routerLink="/">Home</a>
+    <a mat-button routerLink="/favorites">Favorites</a>
+  </nav>
+  <mat-slide-toggle [(ngModel)]="isDarkTheme">Dark Theme</mat-slide-toggle>
+</mat-toolbar>
+<div class="container">
+  <router-outlet></router-outlet>
+</div>

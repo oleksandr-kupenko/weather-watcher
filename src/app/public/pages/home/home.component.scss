@@ -1,0 +1,60 @@
+mat-form-field {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.current-weather {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  .city-info {
+    h2 {
+      margin-bottom: 5px;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  button {
+    color: #ff4081;
+  }
+}
+
+.forecast {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 20px;
+
+  mat-card {
+    mat-card-header {
+      align-items: center;
+
+      mat-card-title {
+        font-size: 18px;
+        font-weight: bold;
+      }
+
+      mat-card-subtitle {
+        color: rgba(0, 0, 0, 0.54);
+      }
+    }
+
+    mat-card-content {
+      margin-top: 10px;
+
+      p {
+        margin: 0;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .forecast {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+}
