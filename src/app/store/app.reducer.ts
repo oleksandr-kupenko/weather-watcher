@@ -1,22 +1,17 @@
 import { isDevMode } from '@angular/core';
+import { ActionReducerMap, MetaReducer } from '@ngrx/store';
 import {
-  ActionReducerMap,
-  MetaReducer
-} from '@ngrx/store';
-import { locationsReducer, LocationsState } from '../public/store/locations/locations.reducer';
-import { weatherReducer, WeatherState } from '../public/store/weather/weather.reducer';
-import { uiReducer, UiState } from '../public/store/ui/ui.reducer';
+  currentPlaceReducer,
+  currentPlayFeatureKey,
+  CurrentPlaceState,
+} from '../public/current-place/store/current-place.reducer';
 
 export interface AppState {
-  locations: LocationsState;
-  weather: WeatherState;
-  ui: UiState;
+  [currentPlayFeatureKey]: CurrentPlaceState;
 }
 
 export const appReducer: ActionReducerMap<AppState> = {
-  locations: locationsReducer,
-  weather: weatherReducer,
-  ui: uiReducer
+  [currentPlayFeatureKey]: currentPlaceReducer,
 };
 
 export const metaReducers: MetaReducer<AppState>[] = isDevMode() ? [] : [];

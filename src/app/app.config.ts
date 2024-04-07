@@ -1,22 +1,23 @@
-import {ApplicationConfig, importProvidersFrom, isDevMode} from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, isDevMode } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import {StoreModule} from "@ngrx/store";
-import {appReducer} from "./store/app.reducer";
-import {StoreDevtoolsModule} from "@ngrx/store-devtools";
+import { provideStore, StoreModule } from '@ngrx/store';
+import { appReducer } from './store/app.reducer';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { HttpClientModule } from '@angular/common/http';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes),
-    importProvidersFrom(
-      StoreModule.forRoot(appReducer, {
-        runtimeChecks: {
-          strictStateImmutability: true,
-          strictActionImmutability: true
-        }
-      }),
-      StoreDevtoolsModule.instrument({maxAge: 25, logOnly: !isDevMode()})
-    ), provideAnimationsAsync()
-  ]
+  providers: [
+    provideRouter(routes),
+    provideStore(appReducer, {
+      runtimeChecks: {
+        strictStateImmutability: true,
+        strictActionImmutability: true,
+      },
+    }),
+    importProvidersFrom(HttpClientModule, StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })),
+    provideAnimationsAsync(),
+  ],
 };

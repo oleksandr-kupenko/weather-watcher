@@ -1,5 +1,10 @@
 import { Routes } from '@angular/router';
-import {PublicWrapperComponent} from "./public-wrapper.component";
+import { PublicWrapperComponent } from './public-wrapper.component';
+import { provideState, StoreModule } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import * as currentPlaceEffects from './current-place/store/current-place.effects';
+import { currentPlaceReducer, currentPlayFeatureKey } from './current-place/store/current-place.reducer';
+import { CurrentPlaceEffects } from './current-place/store/current-place.effects';
 
 export const publicRoutes: Routes = [
   {
@@ -8,14 +13,19 @@ export const publicRoutes: Routes = [
     children: [
       {
         path: 'home',
-        loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent)
+        loadComponent: () => import('./current-place/current-place.component').then((m) => m.CurrentPlaceComponent),
+        providers: [
+          provideState({
+            name: currentPlayFeatureKey,
+            reducer: currentPlaceReducer,
+          }),
+          provideEffects(CurrentPlaceEffects),
+        ],
       },
       {
         path: 'favorites',
-        loadComponent: () => import('./pages/favorites/favorites.component').then(m => m.FavoritesComponent)
+        loadComponent: () => import('./favorites/favorites.component').then((m) => m.FavoritesComponent),
       },
-    ]
-
+    ],
   },
-
 ];
