@@ -5,7 +5,13 @@ export interface WeatherForecast {
 }
 
 export interface WeatherForecastTelemetry {
-  [key: string]: number;
+  [key: string]: {
+    avg: number;
+    min: number;
+    max: number;
+    dayDescription: string;
+    nightDescription: string;
+  };
 }
 export interface ForecastDay {
   date: number;

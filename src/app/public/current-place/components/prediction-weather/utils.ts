@@ -5,7 +5,13 @@ export const forecastToTelemetryTransformer = (forecastDays: ForecastDay[]): Wea
   forecastDays.forEach(dayData => {
     const date = new Date(dayData.date);
     const dayOfWeek = date.toLocaleString('en-US', { weekday: 'long' });
-    result[dayOfWeek] = (dayData.minTemperature + dayData.maxTemperature) / 2;
+    result[dayOfWeek] = {
+      avg: (dayData.minTemperature + dayData.maxTemperature) / 2,
+      min: dayData.minTemperature,
+      max: dayData.maxTemperature,
+      dayDescription: dayData.dayInfo.description,
+      nightDescription: dayData.nightInfo.description
+  };
   });
   return result;
 }
