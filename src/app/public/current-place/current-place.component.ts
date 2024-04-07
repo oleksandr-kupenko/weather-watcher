@@ -14,14 +14,13 @@ import { CurrentWeatherComponent } from './components/current-weather/current-we
 import { Store } from '@ngrx/store';
 import { PlaceAutoCompletePrediction } from './components/search-autocomplete/search-autocomplete.interfaces';
 import { CurrentPlaceReducers } from './store/current-place.actions';
+import { PredictionWeatherComponent } from './components/prediction-weather/prediction-weather.component';
+import {
+  PredictionWeatherChartComponent
+} from './components/prediction-weather-chart/prediction-weather-chart.component';
 
-interface ForecastDay {
-  date: Date;
-  temperature: number;
-  description: string;
-}
 @Component({
-  selector: 'app-home',
+  selector: 'app-current-place',
   standalone: true,
   imports: [
     CommonModule,
@@ -35,51 +34,19 @@ interface ForecastDay {
     RouterModule,
     SearchAutocompleteComponent,
     CurrentWeatherComponent,
+    PredictionWeatherComponent,
+    PredictionWeatherChartComponent
   ],
   templateUrl: './current-place.component.html',
   styleUrl: './current-place.component.scss',
 })
 export class CurrentPlaceComponent {
-  searchQuery = '';
-
-  forecast: ForecastDay[] = [];
+  public isForecastChart = false;
 
   constructor(
     private placeDetailsService: CurrentPlaceService,
     private store: Store,
-  ) {
-    this.forecast = [
-      {
-        date: new Date('2023-06-10'),
-        temperature: 22,
-        description: 'Sunny',
-      },
-      {
-        date: new Date('2023-06-11'),
-        temperature: 24,
-        description: 'Partly cloudy',
-      },
-      {
-        date: new Date('2023-06-12'),
-        temperature: 19,
-        description: 'Rainy',
-      },
-      {
-        date: new Date('2023-06-13'),
-        temperature: 21,
-        description: 'Cloudy',
-      },
-      {
-        date: new Date('2023-06-14'),
-        temperature: 23,
-        description: 'Sunny',
-      },
-    ];
-  }
-
-  searchCity() {
-    console.log('Searching city:', this.searchQuery);
-  }
+  ) {}
 
   public handlePlaceSelected(place: PlaceAutoCompletePrediction) {
     this.store.dispatch(
@@ -90,14 +57,11 @@ export class CurrentPlaceComponent {
       }),
     );
 
-    this.store.dispatch(CurrentPlaceReducers.getCurrentPlaceWeather({ key: place.Key }));
+    this.store.dispatch(CurrentPlaceReducers.getCurrentPlaceCurrentWeather({ key: place.Key }));
+    this.store.dispatch(CurrentPlaceReducers.getPredictWeatherByDays({ key: place.Key }));
+  }
 
-    //this.store.dispatch(CurrentPlaceReducers.getCurrentPlaceInfo({ googlePlaceId: place.place_id }));
-    // this.placeDetailsService.getPlaceDetails(place.place_id).subscribe((placeDetails) => {
-    //   console.log('DETAILS', placeDetails);
-    //   this.placeDetailsService.getPhoto(placeDetails.photos[0].photo_reference).subscribe((photoUrl) => {
-    //     console.log('PHOTO URL', photoUrl);
-    //   });
-    // });
+  public handleIsForecastChart(value: boolean) {
+    this.isForecastChart = !this.isForecastChart;
   }
 }

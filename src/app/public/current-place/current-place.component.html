@@ -1,14 +1,10 @@
 <app-search-autocomplete (onPlaceSelected)="handlePlaceSelected($event)"></app-search-autocomplete>
 <current-place-weather></current-place-weather>
-<div class="forecast" *ngIf="forecast">
-  <mat-card *ngFor="let day of forecast">
-    <mat-card-header>
-      <mat-card-title>{{ day.date | date: 'EEEE' }}</mat-card-title>
-      <mat-card-subtitle>{{ day.date | date: 'MMM d, y' }}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p>Temperature: {{ day.temperature }}°C</p>
-      <p>Description: {{ day.description }}</p>
-    </mat-card-content>
-  </mat-card>
-</div>
+@if (isForecastChart) {
+  <app-prediction-weather-chart></app-prediction-weather-chart>
+} @else {
+  <app-prediction-weather>
+    <mat-slide-toggle [ngModel]="isForecastChart" (ngModelChange)="handleIsForecastChart($event)">Display chart</mat-slide-toggle>
+  </app-prediction-weather>
+}
+

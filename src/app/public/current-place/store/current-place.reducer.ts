@@ -1,6 +1,7 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import { CurrentPlaceReducers } from './current-place.actions';
 import { CountryData } from '../components/search-autocomplete/search-autocomplete.interfaces';
+import { WeatherForecast } from '../components/prediction-weather/prediction-weater.interfaces';
 
 export interface CurrentPlaceState {
   isCurrentPlaceDataLoading: boolean;
@@ -10,7 +11,9 @@ export interface CurrentPlaceState {
   currentData: {
     iconNumber: number | null;
     temperature: number | null;
+    description: string | null;
   };
+  predictionDataByDay: WeatherForecast | null;
 }
 
 export const initialState: CurrentPlaceState = {
@@ -21,7 +24,9 @@ export const initialState: CurrentPlaceState = {
   currentData: {
     iconNumber: null,
     temperature: null,
+    description: null,
   },
+  predictionDataByDay: null,
 };
 
 export const currentPlaceReducer = createReducer(
@@ -32,7 +37,7 @@ export const currentPlaceReducer = createReducer(
     name,
     countryData,
   })),
-  on(CurrentPlaceReducers.getCurrentPlaceWeather, (state) => ({ ...state, isPlaceWeatherLoading: true })),
+  on(CurrentPlaceReducers.getCurrentPlaceCurrentWeather, (state) => ({ ...state, isPlaceWeatherLoading: true })),
   on(CurrentPlaceReducers.currentPlaceWeatherLoadedSuccess, (state, { currentWeather }) => ({
     ...state,
     isPlaceWeatherLoading: false,
@@ -40,7 +45,12 @@ export const currentPlaceReducer = createReducer(
       ...state.currentData,
       iconNumber: currentWeather.WeatherIcon,
       temperature: currentWeather.Temperature.Metric.Value,
+      description: currentWeather.WeatherText,
     },
+  })),
+  on(CurrentPlaceReducers.predictWeatherByDaysLoadedSuccess, (state, { predictedWeather }) => ({
+    ...state,
+   predictionDataByDay: predictedWeather,
   })),
 );
 

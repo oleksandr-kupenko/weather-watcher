@@ -6,6 +6,7 @@ export interface CurrentPlaceWithWeather {
   iconNumber: number | null;
   key: string;
   countryData: CountryData;
+  description: string | null;
 }
 
 export interface CurrentWeather {

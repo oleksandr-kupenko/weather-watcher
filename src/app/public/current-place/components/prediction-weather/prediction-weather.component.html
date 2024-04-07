@@ -1,0 +1,43 @@
+@if (forecast) {
+  <div class="forecast-toggle-container">
+    <ng-content></ng-content>
+  </div>
+
+  <div class="forecast">
+    <mat-card *ngFor="let day of forecast.forecast">
+      <mat-card-header>
+        <mat-card-title>{{ day.date | date: 'EEEE' }}</mat-card-title>
+        <mat-card-subtitle>{{ day.date | date: 'MMM d, y' }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="forecast__icons">
+          @if (day.dayInfo.iconNumber) {
+            <div class="forecast__icons--container" [matTooltip]="day.nightInfo.description">
+              <span>Day</span>
+              <img
+                [src]="'https://apidev.accuweather.com/developers/Media/Default/WeatherIcons/' + day.nightInfo.iconNumber + '-s.png'"
+                [alt]="'Weather in ' + day.dayInfo.description"
+              />
+            </div>
+
+          }
+          @if (day.nightInfo.iconNumber) {
+            <div class="forecast__icons--container" [matTooltip]="day.nightInfo.description">
+              <span>Night</span>
+            <img
+              [src]="'https://apidev.accuweather.com/developers/Media/Default/WeatherIcons/' + day.nightInfo.iconNumber + '-s.png'"
+              [alt]="'Weather in ' + day.nightInfo.description"
+            />
+            </div>
+          }
+        </div>
+        <p class="forecast__temperature"><span class="forecast__temperature--type">Min:</span> {{ day.minTemperature }}°</p>
+        <p class="forecast__temperature"><span class="forecast__temperature--type">Max:</span> {{ day.maxTemperature }}°</p>
+
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+  <p>{{ forecast.description }}</p>
+}
+

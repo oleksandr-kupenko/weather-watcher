@@ -1,0 +1,21 @@
+<mat-form-field appearance="outline">
+  <mat-label>Find city</mat-label>
+  <input type="text" matInput [formControl]="searchControl" [matAutocomplete]="auto" />
+  @if (isDataLoading) {
+    <mat-spinner matSuffix diameter="30"></mat-spinner>
+  }
+  <mat-autocomplete
+    #auto="matAutocomplete"
+    [displayWith]="handleGetOptionText"
+    (optionSelected)="handlePlaceSelected($event)"
+  >
+    @for (prediction of predictions | async; track predictions) {
+      <mat-option [value]="prediction">
+        {{ prediction.LocalizedName }}
+      </mat-option>
+    }
+  </mat-autocomplete>
+  @if (searchControl.invalid) {
+    <mat-error>Only English language supported</mat-error>
+  }
+</mat-form-field>

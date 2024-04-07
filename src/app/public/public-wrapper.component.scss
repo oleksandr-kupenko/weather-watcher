@@ -1,9 +1,18 @@
-.spacer {
-  flex: 1 1 auto;
-}
+:host {
+  display: flex;
+  min-height: 100vh;
+  height: 100%;
+  flex-direction: column;
 
-.container {
-  padding: 20px;
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  .container {
+    padding: 20px;
+    height: 100%;
+  }
+
 }
 
 

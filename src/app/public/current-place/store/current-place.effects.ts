@@ -9,10 +9,22 @@ import { CurrentPlaceReducers } from './current-place.actions';
 export class CurrentPlaceEffects {
   loadCurrentWeather = createEffect(() =>
     this.actions$.pipe(
-      ofType(CurrentPlaceReducers.getCurrentPlaceWeather),
+      ofType(CurrentPlaceReducers.getCurrentPlaceCurrentWeather),
       exhaustMap(({ key }) =>
         this.currentPlaceService.getCurrentWeather(key).pipe(
           map((currentWeather) => CurrentPlaceReducers.currentPlaceWeatherLoadedSuccess({ currentWeather })),
+          catchError(() => of(CurrentPlaceReducers.currentPlaceWeatherLoadedFailure({ error: 'Error' }))),
+        ),
+      ),
+    ),
+  );
+
+  loadPredictedWeatherByDays = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CurrentPlaceReducers.getPredictWeatherByDays),
+      exhaustMap(({ key }) =>
+        this.currentPlaceService.getCurrentPredictedWeatherByDays(key).pipe(
+          map((predictedWeather) => CurrentPlaceReducers.predictWeatherByDaysLoadedSuccess({ predictedWeather })),
           catchError(() => of(CurrentPlaceReducers.currentPlaceWeatherLoadedFailure({ error: 'Error' }))),
         ),
       ),
@@ -24,23 +36,3 @@ export class CurrentPlaceEffects {
     private currentPlaceService: CurrentPlaceService,
   ) {}
 }
-
-// export const loadPlaceDetails = createEffect(
-//   (actions$ = inject(Actions), currentPlaceWeatherService = inject(CurrentPlaceService)) => {
-//     return actions$.pipe(
-//       ofType(CurrentPlaceReducers.getCurrentPlaceWeather),
-//       exhaustMap(({ key }) =>
-//         currentPlaceWeatherService.getCurrentWeather(key).pipe(
-//           map((placeDetails) => {
-//             console.log('YES', placeDetails);
-//             return CurrentPlaceReducers.currentPlaceWeatherLoadedSuccess({ currentPlaceDetails: placeDetails });
-//           }),
-//           catchError((error: { message: string }) =>
-//             of(CurrentPlaceReducers.currentPlaceWeatherLoadedFailure({ error: error.message })),
-//           ),
-//         ),
-//       ),
-//     );
-//   },
-//   { functional: true },
-// );

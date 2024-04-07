@@ -1,0 +1,32 @@
+@if (currentPlaceWithWeather) {
+  <div class="current-weather">
+    <div class="current-weather__img-container" [class.with-border]="!currentPlaceWithWeather.iconNumber">
+      @if (currentPlaceWithWeather.iconNumber) {
+        <img
+          [src]="'https://apidev.accuweather.com/developers/Media/Default/WeatherIcons/' + currentPlaceWithWeather.iconNumber + '-s.png'"
+          [alt]="'Weather in ' + currentPlaceWithWeather.name"
+        />
+      }
+    </div>
+
+    <div class="current-weather__city--info">
+      <h2>
+        {{ currentPlaceWithWeather.name }}
+        <span
+          class="current-weather__city-info--info"
+          [matTooltip]="currentPlaceWithWeather.countryData.LocalizedName"
+          >{{ getFlagEmoji(currentPlaceWithWeather.countryData.ID) }}</span
+        >
+      </h2>
+      <div class="current-weather__city--values">
+        <p>
+          {{ currentPlaceWithWeather.currentTemperature ? currentPlaceWithWeather.currentTemperature + ' °C' : '' }}
+        </p>
+        <p>{{ currentPlaceWithWeather.description }}</p>
+      </div>
+    </div>
+    <button mat-icon-button (click)="toggleFavorite(currentPlaceWithWeather.key)">
+      <mat-icon>{{ handleIsFavorite(currentPlaceWithWeather.key) ? 'favorite' : 'favorite_border' }}</mat-icon>
+    </button>
+  </div>
+}

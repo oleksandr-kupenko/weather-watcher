@@ -1,34 +1,13 @@
-.forecast {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-gap: 20px;
+:host {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 
-  mat-card {
-    mat-card-header {
-      align-items: center;
-
-      mat-card-title {
-        font-size: 18px;
-        font-weight: bold;
-      }
-
-      mat-card-subtitle {
-        color: rgba(0, 0, 0, 0.54);
-      }
-    }
-
-    mat-card-content {
-      margin-top: 10px;
-
-      p {
-        margin: 0;
-      }
-    }
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .forecast {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  app-search-autocomplete {
+    display: block;
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
   }
 }

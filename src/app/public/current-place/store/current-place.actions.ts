@@ -1,6 +1,10 @@
 import { createAction, props } from '@ngrx/store';
 import { CurrentWeather } from '../components/current-weather/current-weather.interface';
 import { CountryData } from '../components/search-autocomplete/search-autocomplete.interfaces';
+import {
+  WeatherForecast,
+  WeatherForecastResponse
+} from '../components/prediction-weather/prediction-weater.interfaces';
 
 export const CurrentPlaceReducers = {
   currentPlaceDataLoading: createAction('[Current Placer] Current Place Data Loading', props<{ isLoading: boolean }>()),
@@ -10,14 +14,7 @@ export const CurrentPlaceReducers = {
     props<{ key: string; name: string; countryData: CountryData }>(),
   ),
 
-  currentPlaceKeyLoadedSuccess: createAction(
-    '[Current Placer] Current Place Loaded Success',
-    props<{ currentPlaceDetails: CurrentWeather }>(),
-  ),
-
-  currentPlaceKeyLoadedFailure: createAction('[Current Placer] Current Place Loaded Failure', props<{ error: any }>()),
-
-  getCurrentPlaceWeather: createAction('[Current Placer] Get Current Place Weather', props<{ key: string }>()),
+  getCurrentPlaceCurrentWeather: createAction('[Current Placer] Get Current Place Current Weather', props<{ key: string }>()),
 
   currentPlaceWeatherLoadedSuccess: createAction(
     '[Current Placer] Current Place Weather Loaded Success',
@@ -26,6 +23,20 @@ export const CurrentPlaceReducers = {
 
   currentPlaceWeatherLoadedFailure: createAction(
     '[Current Placer] Current Place Weather Loaded Failure',
-    props<{ error: any }>(),
+    props<{ error: string }>(),
   ),
+
+  getPredictWeatherByDays: createAction('[Current Placer] Get Predict Weather by Days', props<{ key: string }>()),
+
+  predictWeatherByDaysLoadedSuccess: createAction(
+    '[Current Placer] Predict Weather by Days Loaded Success',
+    props<{ predictedWeather: WeatherForecast }>(),
+  ),
+
+  predictWeatherByDaysLoadedFailure: createAction(
+    '[Current Placer] Predict Weather by Days Loaded Failure',
+    props<{ error: string }>(),
+  ),
+
+  setPredictionDataDisplayType: createAction('[Current Placer] Set Prediction Data Type', props<{ isChart: boolean }>())
 };

@@ -1,0 +1,56 @@
+.current-weather {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 12px;
+
+  &__img-container {
+    height: 80px;
+    width: 130px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 100%;
+    }
+
+    &.with-border {
+      border: 1px solid lightgrey;
+    }
+  }
+
+  &__city {
+    &--info {
+      cursor: default;
+    }
+
+    &--values {
+      height: 55px;
+
+      :first-child {
+        font-size: 24px;
+        font-weight: bold;
+        color: darkgreen;
+      }
+
+      :last-child {
+        color: darkgray;
+      }
+    }
+
+    h2 {
+      margin-bottom: 5px;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  button {
+    margin-left: auto;
+    color: #ff4081;
+  }
+}
