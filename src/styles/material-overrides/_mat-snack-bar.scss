@@ -1,0 +1,38 @@
+mat-snack-bar-container.mat-mdc-snack-bar-container {
+  .mdc-snackbar__surface {
+    color: white;
+    box-shadow: 0 3px 30px rgba(29, 26, 47, 0.05);
+    max-height: 52px;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    width: auto;
+    min-width: auto;
+    max-width: none;
+    padding-right: 20px;
+  }
+
+  .mdc-button__label {
+    color: lightgrey;
+  }
+
+  &.snackbar-success .mdc-snackbar__surface {
+    background-color: #0b790b;
+    color: #ffffff;
+  }
+
+  &.snackbar-error .mdc-snackbar__surface {
+    background-color: #f44336;
+    color: #ffffff;
+  }
+
+  &.snackbar-warning .mdc-snackbar__surface {
+    background-color: #ff9800;
+    color: #ffffff;
+  }
+
+  &.snackbar-info .mdc-snackbar__surface {
+    background-color: #0c426c;
+    color: #ffffff;
+  }
+}

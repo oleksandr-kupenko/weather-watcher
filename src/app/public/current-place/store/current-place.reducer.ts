@@ -1,60 +1,86 @@
-import { createReducer, on } from '@ngrx/store';
+import { ActionReducer, createReducer, on } from '@ngrx/store';
 import { CurrentPlaceActions } from './current-place.actions';
-import { CountryData } from '../components/search-autocomplete/search-autocomplete.interfaces';
 import { WeatherForecast } from '../components/prediction-weather/prediction-weater.interfaces';
 import { FORECAST_VIEW_TYPE } from '../components/prediction-weather-chart/prediction-weather-chart.interfaces';
+import { PlaceWithCurrentWeather } from '../../public.interfaces';
 
+const defaultPlace: PlaceWithCurrentWeather = {
+  key: '324505',
+  currentTemperature: null,
+  name: 'Kyiv',
+  iconNumber: null,
+  countryData: { ID: 'ua', LocalizedName: 'Ukraine' },
+  description: null
+};
 export interface CurrentPlaceState {
-  isCurrentPlaceDataLoading: boolean;
-  placeKey: string;
-  name: string;
-  countryData: CountryData;
-  currentData: {
-    iconNumber: number | null;
-    temperature: number | null;
-    description: string | null;
-  };
+  isCurrentPlaceCurrentWeatherLoading: boolean;
+  isPredictionDataLoading: boolean;
+  isLocationDataLoading: boolean;
+  placeCurrentData: PlaceWithCurrentWeather;
   predictionDataByDays: WeatherForecast | null;
   displayForecastType: FORECAST_VIEW_TYPE;
 }
-
 export const initialState: CurrentPlaceState = {
-  isCurrentPlaceDataLoading: false,
-  placeKey: '324505',
-  name: 'Kyiv',
-  countryData: { ID: 'ua', LocalizedName: 'Ukraine' },
-  currentData: {
-    iconNumber: null,
-    temperature: null,
-    description: null,
-  },
+  isCurrentPlaceCurrentWeatherLoading: false,
+  isPredictionDataLoading: false,
+  isLocationDataLoading: false,
+  placeCurrentData: defaultPlace,
   predictionDataByDays: null,
   displayForecastType: FORECAST_VIEW_TYPE.cards
 };
 
-export const currentPlaceReducer = createReducer(
+export const currentPlaceReducer: ActionReducer<CurrentPlaceState> = createReducer(
   initialState,
-  on(CurrentPlaceActions.setCurrentPlace, (state, { key, name, countryData }) => ({
+  on(CurrentPlaceActions.setCurrentPlace, (state, { key, name, countryData}) => ({
     ...state,
-    placeKey: key,
-    name,
-    countryData,
-  })),
-  on(CurrentPlaceActions.getCurrentPlaceCurrentWeather, (state) => ({ ...state, isPlaceWeatherLoading: true })),
-  on(CurrentPlaceActions.currentPlaceWeatherLoadedSuccess, (state, { currentWeather }) => ({
-    ...state,
-    isPlaceWeatherLoading: false,
-    currentData: {
-      ...state.currentData,
-      iconNumber: currentWeather.WeatherIcon,
-      temperature: currentWeather.Temperature.Metric.Value,
-      description: currentWeather.WeatherText,
+    placeCurrentData: {
+      ...state.placeCurrentData,
+      key,
+      name,
+      countryData,
     },
   })),
+
+  //location
+  on(CurrentPlaceActions.getCurrentPlaceLocationInfo, (state) => ({ ...state, isLocationDataLoading: true })),
+  on(CurrentPlaceActions.locationInfoLoadedSuccess, (state, {locationInfo}) => ({
+    ...state,
+    placeCurrentData: {
+      ...state.placeCurrentData,
+      name: locationInfo.LocalizedName,
+      countryData: { ID: locationInfo.Country.ID, LocalizedName: locationInfo.Country.LocalizedName },
+      key: locationInfo.Key
+    },
+    isLocationDataLoading: false, })),
+  on(CurrentPlaceActions.locationInfoLoadedFailure, (state) => ({ ...state, isLocationDataLoading: false})),
+
+  //current weather
+  on(CurrentPlaceActions.getCurrentPlaceCurrentWeather, (state) => ({ ...state, isCurrentPlaceCurrentWeatherLoading: true })),
+  on(CurrentPlaceActions.currentPlaceWeatherLoadedSuccess, (state, { currentWeather }) => ({
+    ...state,
+    isCurrentPlaceCurrentWeatherLoading: false,
+    placeCurrentData: {
+        ...state.placeCurrentData,
+        iconNumber: currentWeather.WeatherIcon,
+        currentTemperature: currentWeather.Temperature.Metric.Value,
+        description: currentWeather.WeatherText,
+    },
+  })),
+  on(CurrentPlaceActions.currentPlaceWeatherLoadedFailure, (state) => ({
+    ...state,
+    isCurrentPlaceCurrentWeatherLoading: false,
+  })),
+
+  // forecast weather
+  on(CurrentPlaceActions.getPredictWeatherByDays, (state) => ({ ...state, isPredictionDataLoading: true })),
   on(CurrentPlaceActions.predictWeatherByDaysLoadedSuccess, (state, { predictedWeather }) => ({
     ...state,
    predictionDataByDays: predictedWeather,
   })),
+  on(CurrentPlaceActions.predictWeatherByDaysLoadedFailure, (state) => ({ ...state, isPredictionDataLoading: false })),
+
+
+
   on(CurrentPlaceActions.setPredictionDataDisplayType, (state, { displayType }) => ({
     ...state,
     displayForecastType: displayType,

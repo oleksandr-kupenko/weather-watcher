@@ -1,0 +1,59 @@
+:host {
+  display: block;
+  height: 100%;
+  position: relative;
+
+  mat-spinner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .weather-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+
+    &__empty {
+      margin-top: 40vh;
+      text-align: center;
+    }
+
+    app-accuweather-icon {
+      margin-top: 15px;
+    }
+
+    .weather-card {
+      margin: 10px;
+      position: relative;
+      overflow: hidden;
+
+      .weather-info {
+        text-align: center;
+      }
+
+      .hover-buttons {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-start;
+        background-color: rgba(0, 0, 0, 0.05);
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      &:hover .hover-buttons {
+        opacity: 1;
+      }
+    }
+  }
+}
+

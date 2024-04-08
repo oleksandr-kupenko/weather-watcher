@@ -20,6 +20,18 @@ export class CurrentPlaceEffects {
     ),
   );
 
+  loadLocationData = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CurrentPlaceActions.getCurrentPlaceLocationInfo),
+      exhaustMap(({ key }) =>
+        this.currentPlaceService.getPlaceLocationData(key).pipe(
+          map((locationInfo) => CurrentPlaceActions.locationInfoLoadedSuccess({ locationInfo })),
+          catchError(() => of(CurrentPlaceActions.currentPlaceWeatherLoadedFailure({ error: 'Error' }))),
+        ),
+      ),
+    ),
+  );
+
   loadPredictedWeatherByDays = createEffect(() =>
     this.actions$.pipe(
       ofType(CurrentPlaceActions.getPredictWeatherByDays),

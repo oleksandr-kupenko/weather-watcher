@@ -19,6 +19,11 @@ export const publicRoutes: Routes = [
         reducer: favoritesReducer,
       }),
       provideEffects(FavoritesEffects),
+      provideState({
+        name: currentPlaceFeatureKey,
+        reducer: currentPlaceReducer,
+      }),
+      provideEffects(CurrentPlaceEffects),
     ],
     resolve: {
       savedFavorites: favoritesResolver
@@ -27,13 +32,13 @@ export const publicRoutes: Routes = [
       {
         path: 'home',
         loadComponent: () => import('./current-place/current-place.component').then((m) => m.CurrentPlaceComponent),
-        providers: [
-          provideState({
-            name: currentPlaceFeatureKey,
-            reducer: currentPlaceReducer,
-          }),
-          provideEffects(CurrentPlaceEffects),
-        ],
+        resolve: {
+          currentPlace: currentPlaceResolver
+        },
+      },
+      {
+        path: 'home/:key',
+        loadComponent: () => import('./current-place/current-place.component').then((m) => m.CurrentPlaceComponent),
         resolve: {
           currentPlace: currentPlaceResolver
         },

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { forkJoin, Observable } from 'rxjs';
+import { delay, forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PublicService } from '../public.service';
 import { PlaceWithCurrentWeather } from '../public.interfaces';
@@ -25,7 +25,7 @@ export class FavoritesService {
         };
       })
     ));
-    return forkJoin(requests);
+    return forkJoin(requests).pipe(delay(1000));
   }
 
   getFavoritesFromStore(): PlaceWithCurrentWeather[] | null {

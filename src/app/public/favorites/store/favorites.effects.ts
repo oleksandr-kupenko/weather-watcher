@@ -6,6 +6,7 @@ import { FavoritesActions } from './favorites.actions';
 import { FavoritesService } from '../favorites.service';
 import { Store } from '@ngrx/store';
 import { selectFavoritesPlaces } from './favorites.selectors';
+import { NotificationService } from '../../shared/notification.service';
 
 @Injectable()
 export class FavoritesEffects {
@@ -27,14 +28,22 @@ export class FavoritesEffects {
   saveFavoritesToLocalStorage = createEffect(() =>
     this.actions$.pipe(
       ofType(FavoritesActions.setPlace, FavoritesActions.removePlace),
-      exhaustMap((data) => {
+      exhaustMap((action) => {
         return this.store.select(selectFavoritesPlaces).pipe(
           take(1),
           switchMap((favorites) => {
             try {
               this.favoritesService.saveFavoritesToStore(favorites);
-              return of(FavoritesActions.favoritesListSavedSuccess());
+              if (action.type === FavoritesActions.setPlace.type) {
+                action.showNotification && this.notificationService.showNotification('Added to favorites list', 'success');
+                return of(FavoritesActions.favoritesListSavedSuccess({ action: 'add' }));
+              } else {
+                action.showNotification && this.notificationService.showNotification('Removed from favorites list', 'info');
+                return of(FavoritesActions.favoritesListSavedSuccess({ action: 'remove' }));
+              }
             } catch (error) {
+              console.error(error);
+              this.notificationService.showNotification('Failed to save', 'error');
               return of(FavoritesActions.favoritesListSavedFailure({ error: 'Local Storage not available' }));
             }
           })
@@ -47,6 +56,7 @@ export class FavoritesEffects {
   constructor(
     private actions$: Actions,
     private favoritesService: FavoritesService,
-    private store: Store
+    private store: Store,
+    private notificationService: NotificationService
   ) {}
 }

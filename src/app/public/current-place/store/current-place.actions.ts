@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { CurrentWeather } from '../components/current-weather/current-weather.interface';
+import { CurrentWeather, PlaceLocationInfo } from '../components/current-weather/current-weather.interface';
 import { CountryData } from '../components/search-autocomplete/search-autocomplete.interfaces';
 import {
   WeatherForecast,
@@ -13,6 +13,20 @@ export const CurrentPlaceActions = {
   setCurrentPlace: createAction(
     '[Current Placer] Set Current Place Key',
     props<{ key: string; name: string; countryData: CountryData }>(),
+  ),
+
+  setToDefaultCurrentPlace: createAction('[Current Placer] Set to Default Current Place'),
+
+  getCurrentPlaceLocationInfo: createAction('[Current Placer] Get Current Place Location Info', props<{ key: string }>()),
+
+  locationInfoLoadedSuccess: createAction(
+    '[Current Placer] Location Info Loaded Success',
+    props<{ locationInfo: PlaceLocationInfo }>(),
+  ),
+
+  locationInfoLoadedFailure: createAction(
+    '[Current Placer] Location Info Loaded Failure',
+    props<{ error: string }>(),
   ),
 
   getCurrentPlaceCurrentWeather: createAction('[Current Placer] Get Current Place Current Weather', props<{ key: string }>()),

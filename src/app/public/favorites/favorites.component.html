@@ -1,1 +1,31 @@
-<p>favorites works!</p>
+@if (isLoading | async) {
+  <mat-spinner diameter="50"></mat-spinner>
+} @else {
+  <div class="weather-container">
+    @if (favoritePlaces.length) {
+      @for (place of favoritePlaces; track favoritePlaces) {
+        <mat-card class="weather-card">
+          <mat-card-header>
+            <mat-card-title>{{place.name}}</mat-card-title>
+            <mat-card-subtitle>{{ place.description }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+
+            <app-accuweather-icon [iconNumber]="place.iconNumber"></app-accuweather-icon>
+            <div class="weather-info">
+              <p class="weather-card__main-value" [class.alt]="place.currentTemperature && place.currentTemperature < 0">{{ place.currentTemperature }}°C</p>
+            </div>
+          </mat-card-content>
+          <div class="hover-buttons" (click)="handleOpenDetails(place)">
+            <button class="hover-buttons__close-btn" mat-icon-button color="warn" (click)="handleRemovePlace(place.key)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </mat-card>
+      }
+    } @else {
+      <p class="weather-container__empty">List is empty</p>
+    }
+  </div>
+}
+

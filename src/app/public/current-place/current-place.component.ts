@@ -84,9 +84,9 @@ export class CurrentPlaceComponent implements OnInit{
 
   public handleToggleFavorite() {
     if (!this.isFavoritePlace) {
-      this.store.dispatch(FavoritesActions.setPlace({ places: this.currentPlace}));
+      this.store.dispatch(FavoritesActions.setPlace({ places: this.currentPlace, showNotification: true}));
     } else {
-      this.store.dispatch(FavoritesActions.removePlace({ key: this.currentPlace.key}));
+      this.store.dispatch(FavoritesActions.removePlace({ key: this.currentPlace.key, showNotification: true}));
     }
   }
 
@@ -111,7 +111,6 @@ export class CurrentPlaceComponent implements OnInit{
     this.store.select(selectIsFavorite).pipe(
       takeUntilDestroyed(this.destroyRef))
       .subscribe((isFavorite => {
-        console.log('CHECK FAVORITE', isFavorite);
         this.isFavoritePlace = isFavorite;
       }));
   }

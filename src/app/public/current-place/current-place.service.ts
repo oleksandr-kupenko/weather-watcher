@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, switchMap, tap } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { CurrentWeather } from './components/current-weather/current-weather.interface';
+import { CurrentWeather, PlaceLocationInfo } from './components/current-weather/current-weather.interface';
 import { currentPlaceMock } from './current-place.mock';
 import {
   ForecastDay,
@@ -20,7 +20,11 @@ export class CurrentPlaceService {
 
   constructor(private http: HttpClient) {}
 
+  getPlaceLocationData(locationKey: string): Observable<PlaceLocationInfo> {
+    const url = `${this.baseUrl}/locations/v1/${locationKey}?apikey=${this.apiKey}`;
 
+    return this.http.get<PlaceLocationInfo>(url);
+  }
 
   getCurrentPredictedWeatherByDays(locationKey: string): Observable<WeatherForecast> {
     const url = `${this.baseUrl}/forecasts/v1/daily/5day/${locationKey}?&metric=true&apikey=${this.apiKey}`;

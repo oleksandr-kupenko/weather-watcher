@@ -32,11 +32,11 @@
       :first-child {
         font-size: 24px;
         font-weight: bold;
-        color: darkgreen;
+        color: var(--active-contrast);
       }
 
       :last-child {
-        color: darkgray;
+        color: var(--light-contrast);
       }
     }
 

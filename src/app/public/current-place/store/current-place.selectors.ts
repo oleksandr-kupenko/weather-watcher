@@ -9,14 +9,7 @@ export const selectCurrentPlaceState = createFeatureSelector<CurrentPlaceState>(
 export const selectCurrentPlaceCurrentData = createSelector(
   selectCurrentPlaceState,
   (state): PlaceWithCurrentWeather => {
-    return {
-      key: state.placeKey,
-      currentTemperature: state.currentData.temperature,
-      name: state.name,
-      iconNumber: state.currentData.iconNumber,
-      countryData: state.countryData,
-      description: state.currentData.description,
-    };
+    return state.placeCurrentData;
   },
 );
 

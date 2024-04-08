@@ -23,6 +23,13 @@ export const selectIsFavorite = createSelector(
   selectFavoritesState,
   selectCurrentPlaceState,
   (favoritesState, currentPlaceSate): boolean => {
-    return favoritesState.favoritePlacesWithWeather.some(place => place.key === currentPlaceSate.placeKey);
+    return favoritesState.favoritePlacesWithWeather.some(place => place.key === currentPlaceSate.placeCurrentData.key);
+  },
+);
+
+export const selectFavoriteLoadingStatus = createSelector(
+  selectFavoritesState,
+  (state): boolean => {
+    return state.isFavoritesLoading;
   },
 );

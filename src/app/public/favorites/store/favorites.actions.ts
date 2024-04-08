@@ -3,8 +3,8 @@ import { CurrentWeather } from '../../current-place/components/current-weather/c
 import { PlaceWithCurrentWeather } from '../../public.interfaces';
 
 export const FavoritesActions = {
-  setPlace: createAction('[Favorites] Set place', props<{ places: PlaceWithCurrentWeather | PlaceWithCurrentWeather[] }>()),
-  removePlace: createAction('[Favorites] Remove place', props<{ key: string }>()),
+  setPlace: createAction('[Favorites] Set place', props<{ places: PlaceWithCurrentWeather | PlaceWithCurrentWeather[], showNotification?: boolean }>()),
+  removePlace: createAction('[Favorites] Remove place', props<{ key: string, showNotification?: boolean }>()),
 
   getFavoritesWeather: createAction('[Favorites] Get Favorites Weather', props<{ places: PlaceWithCurrentWeather[] }>()),
 
@@ -19,7 +19,8 @@ export const FavoritesActions = {
   ),
 
   favoritesListSavedSuccess: createAction(
-    '[Favorites] Favorites List Saved Success'
+    '[Favorites] Favorites List Saved Success',
+    props<{ action: 'add' | 'remove' }>(),
   ),
 
   favoritesListSavedFailure: createAction(

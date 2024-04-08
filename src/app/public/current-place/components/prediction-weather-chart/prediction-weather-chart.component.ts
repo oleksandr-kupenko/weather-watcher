@@ -106,7 +106,7 @@ export class PredictionWeatherChartComponent implements OnInit {
       yAxis: [
         {
           type: 'value',
-          name: 'Day',
+          name: 'Temperature',
           interval: 5,
           axisLabel: {
             formatter: '{value} °C'
