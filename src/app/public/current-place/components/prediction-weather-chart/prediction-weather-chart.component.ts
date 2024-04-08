@@ -6,12 +6,13 @@ import { WeatherForecastTelemetry } from '../prediction-weather/prediction-weate
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { EChartsOption, EChartsType } from 'echarts';
 import * as echarts from 'echarts';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 @Component({
   selector: 'app-prediction-weather-chart',
   standalone: true,
-  imports: [],
+  imports: [MatCheckboxModule],
   templateUrl: './prediction-weather-chart.component.html',
   styleUrl: './prediction-weather-chart.component.scss'
 })
@@ -19,7 +20,10 @@ export class PredictionWeatherChartComponent implements OnInit {
   @ViewChild('chartDivElement') chartElementRef!: ElementRef;
 
   public chart!: EChartsType;
-  public options!: EChartsOption;
+
+  private currentOptions!: EChartsOption;
+  private dayNightOptions!: EChartsOption;
+  private onlyAvgOptions!: EChartsOption;
 
   private tooltipValues!: string[];
 
@@ -33,22 +37,23 @@ export class PredictionWeatherChartComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.select(selectCurrentPlacePredictedData)
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(data => {
-      if (data) {
-        const forecastTelemetry = forecastToTelemetryTransformer(data.forecast);
-        this.createOptions(forecastTelemetry);
-        this.createTooltipValues(forecastTelemetry);
-        setTimeout(() => this.initChart());
-      }
-    })
+    this.initChartWithOptions();
   }
 
-  initChart() {
+  public handleTypeChart(value: boolean) {
+    if (value) {
+      this.currentOptions = this.onlyAvgOptions;
+      this.chart.setOption(this.currentOptions, true);
+    } else {
+      this.currentOptions = this.dayNightOptions;
+      this.chart.setOption(this.dayNightOptions, true);
+    }
+  }
+
+  private initChart() {
     if (this.chartElementRef) {
       this.chart = echarts.init(this.chartElementRef.nativeElement);
-      this.chart.setOption(this.options);
+      setTimeout(() => this.chart.setOption(this.currentOptions), 100);
       this.resizeChart();
     } else {
       console.log('element not present');
@@ -67,7 +72,97 @@ export class PredictionWeatherChartComponent implements OnInit {
   }
 
   private createOptions(forecastTelemetry: WeatherForecastTelemetry) {
-    this.options = {
+    this.dayNightOptions = {
+      grid: {
+        right: '3%'
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'cross',
+          crossStyle: {
+            color: '#999'
+          }
+        }
+      },
+      toolbox: {
+        feature: {
+          magicType: { show: true, type: ['line', 'bar'] },
+          restore: { show: true },
+        }
+      },
+      legend: {
+        data: ['Day', 'Night', 'AVG']
+      },
+      xAxis: [
+        {
+          type: 'category',
+          data: Object.keys(forecastTelemetry),
+          axisPointer: {
+            type: 'shadow'
+          }
+        }
+      ],
+      yAxis: [
+        {
+          type: 'value',
+          name: 'Day',
+          interval: 5,
+          axisLabel: {
+            formatter: '{value} °C'
+          }
+        },
+        {
+          type: 'value',
+          name: 'Night',
+          interval: 5,
+          axisLabel: {
+            formatter: '{value} °C'
+          },
+          show: false
+        }
+      ],
+      series: [
+        {
+          name: 'Night',
+          type: 'bar',
+          tooltip: {
+            valueFormatter: function (value) {
+              return value + ' °C';
+            }
+          },
+          data: Object.values(forecastTelemetry).map(value => value.min)
+        },
+        {
+          name: 'Day',
+          type: 'bar',
+          tooltip: {
+            valueFormatter: function (value) {
+              return value + ' °C';
+            }
+          },
+          data: Object.values(forecastTelemetry).map(value => value.max)
+        },
+        {
+          name: 'AVG Temperature',
+          type: 'line',
+          yAxisIndex: 1,
+          tooltip: {
+            valueFormatter: function (value) {
+              return value + ' °C';
+            }
+          },
+          data: Object.values(forecastTelemetry).map(value => value.avg)
+        }
+      ]
+    }
+  }
+
+  private createAVGOptions(forecastTelemetry: WeatherForecastTelemetry) {
+    this.onlyAvgOptions = {
+      grid: {
+        right: '5%'
+      },
       tooltip: {
         trigger: 'axis',
         formatter: (params) => {
@@ -104,5 +199,20 @@ export class PredictionWeatherChartComponent implements OnInit {
       return `<p><strong>Min:</strong> ${value.min}°C</p><p><strong>Max:</strong> ${value.max}°C</p>
                <p><strong>Day:</strong> ${value.dayDescription}</p><p><strong>Night:</strong> ${value.nightDescription}</p>`;
     });
+  }
+
+  private initChartWithOptions() {
+    this.store.select(selectCurrentPlacePredictedData)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(data => {
+        if (data) {
+          const forecastTelemetry = forecastToTelemetryTransformer(data.forecast);
+          this.createOptions(forecastTelemetry);
+          this.createAVGOptions(forecastTelemetry);
+          this.createTooltipValues(forecastTelemetry);
+          this.currentOptions = this.dayNightOptions;
+          setTimeout(() => this.initChart());
+        }
+      });
   }
 }

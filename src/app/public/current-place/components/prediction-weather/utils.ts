@@ -4,8 +4,9 @@ export const forecastToTelemetryTransformer = (forecastDays: ForecastDay[]): Wea
   const result: WeatherForecastTelemetry = {};
   forecastDays.forEach(dayData => {
     const date = new Date(dayData.date);
-    const dayOfWeek = date.toLocaleString('en-US', { weekday: 'long' });
-    result[dayOfWeek] = {
+    const dayOfWeek = date.toLocaleString('en-US', { weekday: 'long' }).slice(0, 3);
+    const formattedDate = date.getDate() + ' ' + date.toLocaleString('en-US', { month: 'long' });
+    result[dayOfWeek + ' (' + formattedDate + ')'] = {
       avg: (dayData.minTemperature + dayData.maxTemperature) / 2,
       min: dayData.minTemperature,
       max: dayData.maxTemperature,

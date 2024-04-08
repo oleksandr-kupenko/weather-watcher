@@ -5,6 +5,7 @@ import {
   WeatherForecast,
   WeatherForecastResponse
 } from '../components/prediction-weather/prediction-weater.interfaces';
+import { FORECAST_VIEW_TYPE } from '../components/prediction-weather-chart/prediction-weather-chart.interfaces';
 
 export const CurrentPlaceActions = {
   currentPlaceDataLoading: createAction('[Current Placer] Current Place Data Loading', props<{ isLoading: boolean }>()),
@@ -38,5 +39,5 @@ export const CurrentPlaceActions = {
     props<{ error: string }>(),
   ),
 
-  setPredictionDataDisplayType: createAction('[Current Placer] Set Prediction Data Type', props<{ isChart: boolean }>())
+  setPredictionDataDisplayType: createAction('[Current Placer] Set Prediction Data Type', props<{ displayType: FORECAST_VIEW_TYPE }>())
 };

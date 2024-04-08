@@ -22,6 +22,8 @@ import { FavoritesActions } from '../favorites/store/favorites.actions';
 import { Observable } from 'rxjs';
 import { selectFavoritesKeys } from '../favorites/store/favorites.selectors';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FORECAST_VIEW_TYPE } from './components/prediction-weather-chart/prediction-weather-chart.interfaces';
+import { selectForecastViewType } from './store/current-place.selectors';
 
 @Component({
   selector: 'app-current-place',
@@ -47,6 +49,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 export class CurrentPlaceComponent implements OnInit{
   public isForecastChart = false;
   public isFavoritePlace = false;
+  public forecastDisplayType: FORECAST_VIEW_TYPE = FORECAST_VIEW_TYPE.cards;
 
   private currentPlaceKey = '';
   private destroyRef = inject(DestroyRef);
@@ -57,6 +60,7 @@ export class CurrentPlaceComponent implements OnInit{
 
   ngOnInit() {
     this.checkIsFavorite();
+    this.getForecastViewType();
   }
 
   public handlePlaceSelected(place: PlaceAutoCompletePrediction) {
@@ -74,7 +78,8 @@ export class CurrentPlaceComponent implements OnInit{
   }
 
   public handleIsForecastChart(value: boolean) {
-    this.isForecastChart = value;
+    this.store.dispatch(CurrentPlaceActions
+      .setPredictionDataDisplayType({ displayType: this.isForecastChart ? FORECAST_VIEW_TYPE.chartDayNight : FORECAST_VIEW_TYPE.cards }));
   }
 
   public handleToggleFavorite() {
@@ -90,5 +95,12 @@ export class CurrentPlaceComponent implements OnInit{
       .subscribe(favoritesList => {
         this.isFavoritePlace = favoritesList.includes(this.currentPlaceKey);
       });
+  }
+
+  private getForecastViewType() {
+    this.store.select(selectForecastViewType).pipe(takeUntilDestroyed(this.destroyRef)).subscribe(type => {
+      this.forecastDisplayType = type;
+      this.isForecastChart = type === FORECAST_VIEW_TYPE.chartDayNight || type === FORECAST_VIEW_TYPE.chartAvg;
+    })
   }
 }

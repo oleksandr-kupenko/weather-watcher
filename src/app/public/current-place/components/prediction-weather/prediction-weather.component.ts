@@ -6,7 +6,6 @@ import { Store } from '@ngrx/store';
 import { selectCurrentPlacePredictedData } from '../../store/current-place.selectors';
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { forecastToTelemetryTransformer } from './utils';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 

@@ -1,7 +1,8 @@
-import { Action, createReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import { CurrentPlaceActions } from './current-place.actions';
 import { CountryData } from '../components/search-autocomplete/search-autocomplete.interfaces';
 import { WeatherForecast } from '../components/prediction-weather/prediction-weater.interfaces';
+import { FORECAST_VIEW_TYPE } from '../components/prediction-weather-chart/prediction-weather-chart.interfaces';
 
 export interface CurrentPlaceState {
   isCurrentPlaceDataLoading: boolean;
@@ -14,6 +15,7 @@ export interface CurrentPlaceState {
     description: string | null;
   };
   predictionDataByDays: WeatherForecast | null;
+  displayForecastType: FORECAST_VIEW_TYPE;
 }
 
 export const initialState: CurrentPlaceState = {
@@ -27,6 +29,7 @@ export const initialState: CurrentPlaceState = {
     description: null,
   },
   predictionDataByDays: null,
+  displayForecastType: FORECAST_VIEW_TYPE.cards
 };
 
 export const currentPlaceReducer = createReducer(
@@ -51,6 +54,10 @@ export const currentPlaceReducer = createReducer(
   on(CurrentPlaceActions.predictWeatherByDaysLoadedSuccess, (state, { predictedWeather }) => ({
     ...state,
    predictionDataByDays: predictedWeather,
+  })),
+  on(CurrentPlaceActions.setPredictionDataDisplayType, (state, { displayType }) => ({
+    ...state,
+    displayForecastType: displayType,
   })),
 );
 
