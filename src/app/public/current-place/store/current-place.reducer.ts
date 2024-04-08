@@ -1,5 +1,5 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { CurrentPlaceReducers } from './current-place.actions';
+import { CurrentPlaceActions } from './current-place.actions';
 import { CountryData } from '../components/search-autocomplete/search-autocomplete.interfaces';
 import { WeatherForecast } from '../components/prediction-weather/prediction-weater.interfaces';
 
@@ -13,7 +13,7 @@ export interface CurrentPlaceState {
     temperature: number | null;
     description: string | null;
   };
-  predictionDataByDay: WeatherForecast | null;
+  predictionDataByDays: WeatherForecast | null;
 }
 
 export const initialState: CurrentPlaceState = {
@@ -26,19 +26,19 @@ export const initialState: CurrentPlaceState = {
     temperature: null,
     description: null,
   },
-  predictionDataByDay: null,
+  predictionDataByDays: null,
 };
 
 export const currentPlaceReducer = createReducer(
   initialState,
-  on(CurrentPlaceReducers.setCurrentPlace, (state, { key, name, countryData }) => ({
+  on(CurrentPlaceActions.setCurrentPlace, (state, { key, name, countryData }) => ({
     ...state,
     placeKey: key,
     name,
     countryData,
   })),
-  on(CurrentPlaceReducers.getCurrentPlaceCurrentWeather, (state) => ({ ...state, isPlaceWeatherLoading: true })),
-  on(CurrentPlaceReducers.currentPlaceWeatherLoadedSuccess, (state, { currentWeather }) => ({
+  on(CurrentPlaceActions.getCurrentPlaceCurrentWeather, (state) => ({ ...state, isPlaceWeatherLoading: true })),
+  on(CurrentPlaceActions.currentPlaceWeatherLoadedSuccess, (state, { currentWeather }) => ({
     ...state,
     isPlaceWeatherLoading: false,
     currentData: {
@@ -48,10 +48,10 @@ export const currentPlaceReducer = createReducer(
       description: currentWeather.WeatherText,
     },
   })),
-  on(CurrentPlaceReducers.predictWeatherByDaysLoadedSuccess, (state, { predictedWeather }) => ({
+  on(CurrentPlaceActions.predictWeatherByDaysLoadedSuccess, (state, { predictedWeather }) => ({
     ...state,
-   predictionDataByDay: predictedWeather,
+   predictionDataByDays: predictedWeather,
   })),
 );
 
-export const currentPlayFeatureKey = 'CurrentPlaceState';
+export const currentPlaceFeatureKey = 'CurrentPlaceState';

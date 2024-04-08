@@ -1,10 +1,22 @@
 <app-search-autocomplete (onPlaceSelected)="handlePlaceSelected($event)"></app-search-autocomplete>
-<current-place-weather></current-place-weather>
+<current-place-weather>
+  <button mat-fab [color]="isFavoritePlace ? 'primary' : 'basic'" extended
+          (click)="handleToggleFavorite()">
+    <mat-icon>{{ isFavoritePlace ? 'favorite' : 'favorite_border' }}</mat-icon>
+    Favorite
+  </button>
+
+</current-place-weather>
 @if (isForecastChart) {
-  <app-prediction-weather-chart></app-prediction-weather-chart>
+  <app-prediction-weather-chart>
+    <ng-container *ngTemplateOutlet="chartToggle"></ng-container>
+  </app-prediction-weather-chart>
 } @else {
   <app-prediction-weather>
-    <mat-slide-toggle [ngModel]="isForecastChart" (ngModelChange)="handleIsForecastChart($event)">Display chart</mat-slide-toggle>
+    <ng-container *ngTemplateOutlet="chartToggle"></ng-container>
   </app-prediction-weather>
 }
 
+<ng-template #chartToggle>
+  <mat-slide-toggle [(ngModel)]="isForecastChart" (ngModelChange)="handleIsForecastChart($event)">Display chart</mat-slide-toggle>
+</ng-template>

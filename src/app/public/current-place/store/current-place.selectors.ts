@@ -1,9 +1,9 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { CurrentPlaceState, currentPlayFeatureKey } from './current-place.reducer';
+import { CurrentPlaceState, currentPlaceFeatureKey } from './current-place.reducer';
 import { CurrentPlaceWithWeather } from '../components/current-weather/current-weather.interface';
 import { WeatherForecast } from '../components/prediction-weather/prediction-weater.interfaces';
 
-export const selectCurrentPlaceState = createFeatureSelector<CurrentPlaceState>(currentPlayFeatureKey);
+export const selectCurrentPlaceState = createFeatureSelector<CurrentPlaceState>(currentPlaceFeatureKey);
 
 export const selectCurrentPlaceCurrentData = createSelector(
   selectCurrentPlaceState,
@@ -22,6 +22,6 @@ export const selectCurrentPlaceCurrentData = createSelector(
 export const selectCurrentPlacePredictedData = createSelector(
   selectCurrentPlaceState,
   (state): WeatherForecast | null => {
-    return state.predictionDataByDay;
+    return state.predictionDataByDays;
   },
 );

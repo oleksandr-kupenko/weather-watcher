@@ -3,17 +3,17 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { map, exhaustMap, catchError } from 'rxjs/operators';
 import { CurrentPlaceService } from '../current-place.service';
-import { CurrentPlaceReducers } from './current-place.actions';
+import { CurrentPlaceActions } from './current-place.actions';
 
 @Injectable()
 export class CurrentPlaceEffects {
   loadCurrentWeather = createEffect(() =>
     this.actions$.pipe(
-      ofType(CurrentPlaceReducers.getCurrentPlaceCurrentWeather),
+      ofType(CurrentPlaceActions.getCurrentPlaceCurrentWeather),
       exhaustMap(({ key }) =>
         this.currentPlaceService.getCurrentWeather(key).pipe(
-          map((currentWeather) => CurrentPlaceReducers.currentPlaceWeatherLoadedSuccess({ currentWeather })),
-          catchError(() => of(CurrentPlaceReducers.currentPlaceWeatherLoadedFailure({ error: 'Error' }))),
+          map((currentWeather) => CurrentPlaceActions.currentPlaceWeatherLoadedSuccess({ currentWeather })),
+          catchError(() => of(CurrentPlaceActions.currentPlaceWeatherLoadedFailure({ error: 'Error' }))),
         ),
       ),
     ),
@@ -21,11 +21,11 @@ export class CurrentPlaceEffects {
 
   loadPredictedWeatherByDays = createEffect(() =>
     this.actions$.pipe(
-      ofType(CurrentPlaceReducers.getPredictWeatherByDays),
+      ofType(CurrentPlaceActions.getPredictWeatherByDays),
       exhaustMap(({ key }) =>
         this.currentPlaceService.getCurrentPredictedWeatherByDays(key).pipe(
-          map((predictedWeather) => CurrentPlaceReducers.predictWeatherByDaysLoadedSuccess({ predictedWeather })),
-          catchError(() => of(CurrentPlaceReducers.currentPlaceWeatherLoadedFailure({ error: 'Error' }))),
+          map((predictedWeather) => CurrentPlaceActions.predictWeatherByDaysLoadedSuccess({ predictedWeather })),
+          catchError(() => of(CurrentPlaceActions.currentPlaceWeatherLoadedFailure({ error: 'Error' }))),
         ),
       ),
     ),

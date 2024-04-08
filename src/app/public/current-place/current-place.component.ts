@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -13,11 +13,15 @@ import { CurrentPlaceService } from './current-place.service';
 import { CurrentWeatherComponent } from './components/current-weather/current-weather.component';
 import { Store } from '@ngrx/store';
 import { PlaceAutoCompletePrediction } from './components/search-autocomplete/search-autocomplete.interfaces';
-import { CurrentPlaceReducers } from './store/current-place.actions';
+import { CurrentPlaceActions } from './store/current-place.actions';
 import { PredictionWeatherComponent } from './components/prediction-weather/prediction-weather.component';
 import {
   PredictionWeatherChartComponent
 } from './components/prediction-weather-chart/prediction-weather-chart.component';
+import { FavoritesActions } from '../favorites/store/favorites.actions';
+import { Observable } from 'rxjs';
+import { selectFavoritesKeys } from '../favorites/store/favorites.selectors';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-current-place',
@@ -40,28 +44,51 @@ import {
   templateUrl: './current-place.component.html',
   styleUrl: './current-place.component.scss',
 })
-export class CurrentPlaceComponent {
+export class CurrentPlaceComponent implements OnInit{
   public isForecastChart = false;
+  public isFavoritePlace = false;
+
+  private currentPlaceKey = '';
+  private destroyRef = inject(DestroyRef);
 
   constructor(
-    private placeDetailsService: CurrentPlaceService,
-    private store: Store,
+    private store: Store
   ) {}
 
+  ngOnInit() {
+    this.checkIsFavorite();
+  }
+
   public handlePlaceSelected(place: PlaceAutoCompletePrediction) {
+    this.currentPlaceKey = place.Key;
     this.store.dispatch(
-      CurrentPlaceReducers.setCurrentPlace({
+      CurrentPlaceActions.setCurrentPlace({
         key: place.Key,
         name: place.LocalizedName,
         countryData: place.Country,
       }),
     );
 
-    this.store.dispatch(CurrentPlaceReducers.getCurrentPlaceCurrentWeather({ key: place.Key }));
-    this.store.dispatch(CurrentPlaceReducers.getPredictWeatherByDays({ key: place.Key }));
+    this.store.dispatch(CurrentPlaceActions.getCurrentPlaceCurrentWeather({ key: place.Key }));
+    this.store.dispatch(CurrentPlaceActions.getPredictWeatherByDays({ key: place.Key }));
   }
 
   public handleIsForecastChart(value: boolean) {
-    this.isForecastChart = !this.isForecastChart;
+    this.isForecastChart = value;
+  }
+
+  public handleToggleFavorite() {
+    if (!this.isFavoritePlace) {
+      this.store.dispatch(FavoritesActions.setPlace({ key: this.currentPlaceKey}));
+    } else {
+      this.store.dispatch(FavoritesActions.removePlace({ key: this.currentPlaceKey}));
+    }
+  }
+
+  private checkIsFavorite() {
+    this.store.select(selectFavoritesKeys).pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(favoritesList => {
+        this.isFavoritePlace = favoritesList.includes(this.currentPlaceKey);
+      });
   }
 }

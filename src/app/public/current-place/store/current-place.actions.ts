@@ -6,7 +6,7 @@ import {
   WeatherForecastResponse
 } from '../components/prediction-weather/prediction-weater.interfaces';
 
-export const CurrentPlaceReducers = {
+export const CurrentPlaceActions = {
   currentPlaceDataLoading: createAction('[Current Placer] Current Place Data Loading', props<{ isLoading: boolean }>()),
 
   setCurrentPlace: createAction(
