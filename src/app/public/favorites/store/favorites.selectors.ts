@@ -1,12 +1,28 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { favoritesFeatureKey, FavoritesState } from './favorites.reducer';
-import { CurrentPlaceWithWeather } from '../../current-place/components/current-weather/current-weather.interface';
+import { PlaceWithCurrentWeather } from '../../public.interfaces';
+import { selectCurrentPlaceState } from '../../current-place/store/current-place.selectors';
 
 export const selectFavoritesState = createFeatureSelector<FavoritesState>(favoritesFeatureKey);
 
-export const selectFavoritesKeys = createSelector(
+export const selectFavoritesPlaces = createSelector(
   selectFavoritesState,
-  (state): string[] => {
-    return state.favoritesKeys;
+  (state): PlaceWithCurrentWeather[] => {
+    return state.favoritePlacesWithWeather;
+  },
+);
+
+export const selectFavoritePlace = (key: string) => createSelector(
+  selectFavoritesState,
+  (state): PlaceWithCurrentWeather | undefined => {
+    return state.favoritePlacesWithWeather.find(place => place.key === key);
+  },
+);
+
+export const selectIsFavorite = createSelector(
+  selectFavoritesState,
+  selectCurrentPlaceState,
+  (favoritesState, currentPlaceSate): boolean => {
+    return favoritesState.favoritePlacesWithWeather.some(place => place.key === currentPlaceSate.placeKey);
   },
 );

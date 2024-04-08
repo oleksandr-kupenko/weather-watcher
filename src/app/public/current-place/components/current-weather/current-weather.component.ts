@@ -2,12 +2,11 @@ import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule, MatIconButton } from '@angular/material/button';
 import { AsyncPipe, NgIf, NgOptimizedImage } from '@angular/common';
-import { CurrentPlaceWithWeather } from './current-weather.interface';
 import { Store } from '@ngrx/store';
 import { selectCurrentPlaceCurrentData } from '../../store/current-place.selectors';
 import { MatTooltip } from '@angular/material/tooltip';
-import { pipe } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { PlaceWithCurrentWeather } from '../../../public.interfaces';
 
 @Component({
   selector: 'current-place-weather',
@@ -17,7 +16,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrl: './current-weather.component.scss',
 })
 export class CurrentWeatherComponent implements OnInit {
-  public currentPlaceWithWeather: CurrentPlaceWithWeather | null = null;
+  public currentPlaceWithWeather: PlaceWithCurrentWeather | null = null;
   favorites: string[] = [];
 
   private destroyRef = inject(DestroyRef);

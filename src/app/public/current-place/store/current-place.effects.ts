@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 import { map, exhaustMap, catchError } from 'rxjs/operators';
 import { CurrentPlaceService } from '../current-place.service';
 import { CurrentPlaceActions } from './current-place.actions';
+import { PublicService } from '../../public.service';
 
 @Injectable()
 export class CurrentPlaceEffects {
@@ -11,7 +12,7 @@ export class CurrentPlaceEffects {
     this.actions$.pipe(
       ofType(CurrentPlaceActions.getCurrentPlaceCurrentWeather),
       exhaustMap(({ key }) =>
-        this.currentPlaceService.getCurrentWeather(key).pipe(
+        this.publicService.getPlaceWeather(key).pipe(
           map((currentWeather) => CurrentPlaceActions.currentPlaceWeatherLoadedSuccess({ currentWeather })),
           catchError(() => of(CurrentPlaceActions.currentPlaceWeatherLoadedFailure({ error: 'Error' }))),
         ),
@@ -34,5 +35,6 @@ export class CurrentPlaceEffects {
   constructor(
     private actions$: Actions,
     private currentPlaceService: CurrentPlaceService,
+    private publicService: PublicService
   ) {}
 }

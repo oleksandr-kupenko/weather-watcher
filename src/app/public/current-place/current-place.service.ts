@@ -20,11 +20,7 @@ export class CurrentPlaceService {
 
   constructor(private http: HttpClient) {}
 
-  getCurrentWeather(locationKey: string): Observable<CurrentWeather> {
-    const url = `${this.baseUrl}/currentconditions/v1/${locationKey}?apikey=${this.apiKey}`;
-    return of(currentPlaceMock[0]);
-    //return this.http.get<CurrentWeather[]>(url).pipe(map((data) => data[0]));
-  }
+
 
   getCurrentPredictedWeatherByDays(locationKey: string): Observable<WeatherForecast> {
     const url = `${this.baseUrl}/forecasts/v1/daily/5day/${locationKey}?&metric=true&apikey=${this.apiKey}`;

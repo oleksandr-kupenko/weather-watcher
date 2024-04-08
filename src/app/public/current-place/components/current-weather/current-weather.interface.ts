@@ -1,13 +1,4 @@
-import { CountryData } from '../search-autocomplete/search-autocomplete.interfaces';
 
-export interface CurrentPlaceWithWeather {
-  name: string;
-  currentTemperature: number | null;
-  iconNumber: number | null;
-  key: string;
-  countryData: CountryData;
-  description: string | null;
-}
 
 export interface CurrentWeather {
   LocalObservationDateTime: string;
@@ -33,7 +24,4 @@ export interface CurrentWeather {
   Link: string;
 }
 
-export interface PlaceLocation {
-  lat: number;
-  lng: number;
-}
+

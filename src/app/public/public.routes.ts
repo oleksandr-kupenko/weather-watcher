@@ -6,6 +6,8 @@ import { currentPlaceReducer, currentPlaceFeatureKey } from './current-place/sto
 import { CurrentPlaceEffects } from './current-place/store/current-place.effects';
 import { favoritesFeatureKey, favoritesReducer } from './favorites/store/favorites.reducer';
 import { FavoritesEffects } from './favorites/store/favorites.effects';
+import { favoritesResolver } from './favorites/favorites.resolver';
+import { currentPlaceResolver } from './current-place/current-place.resolver';
 
 export const publicRoutes: Routes = [
   {
@@ -18,7 +20,9 @@ export const publicRoutes: Routes = [
       }),
       provideEffects(FavoritesEffects),
     ],
-
+    resolve: {
+      savedFavorites: favoritesResolver
+    },
     children: [
       {
         path: 'home',
@@ -30,6 +34,9 @@ export const publicRoutes: Routes = [
           }),
           provideEffects(CurrentPlaceEffects),
         ],
+        resolve: {
+          currentPlace: currentPlaceResolver
+        },
       },
       {
         path: 'favorites',

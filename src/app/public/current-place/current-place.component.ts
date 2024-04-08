@@ -9,7 +9,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { SearchAutocompleteComponent } from './components/search-autocomplete/search-autocomplete.component';
-import { CurrentPlaceService } from './current-place.service';
 import { CurrentWeatherComponent } from './components/current-weather/current-weather.component';
 import { Store } from '@ngrx/store';
 import { PlaceAutoCompletePrediction } from './components/search-autocomplete/search-autocomplete.interfaces';
@@ -19,11 +18,12 @@ import {
   PredictionWeatherChartComponent
 } from './components/prediction-weather-chart/prediction-weather-chart.component';
 import { FavoritesActions } from '../favorites/store/favorites.actions';
-import { Observable } from 'rxjs';
-import { selectFavoritesKeys } from '../favorites/store/favorites.selectors';
+import { selectIsFavorite } from '../favorites/store/favorites.selectors';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FORECAST_VIEW_TYPE } from './components/prediction-weather-chart/prediction-weather-chart.interfaces';
-import { selectForecastViewType } from './store/current-place.selectors';
+import { selectCurrentPlaceCurrentData, selectForecastViewType } from './store/current-place.selectors';
+import { PlaceWithCurrentWeather } from '../public.interfaces';
+
 
 @Component({
   selector: 'app-current-place',
@@ -51,7 +51,7 @@ export class CurrentPlaceComponent implements OnInit{
   public isFavoritePlace = false;
   public forecastDisplayType: FORECAST_VIEW_TYPE = FORECAST_VIEW_TYPE.cards;
 
-  private currentPlaceKey = '';
+  private currentPlace!: PlaceWithCurrentWeather;
   private destroyRef = inject(DestroyRef);
 
   constructor(
@@ -59,12 +59,12 @@ export class CurrentPlaceComponent implements OnInit{
   ) {}
 
   ngOnInit() {
-    this.checkIsFavorite();
     this.getForecastViewType();
+    this.getCurrentPlaceFromStore();
+    this.checkIsFavorite(this.currentPlace.key);
   }
 
   public handlePlaceSelected(place: PlaceAutoCompletePrediction) {
-    this.currentPlaceKey = place.Key;
     this.store.dispatch(
       CurrentPlaceActions.setCurrentPlace({
         key: place.Key,
@@ -84,17 +84,10 @@ export class CurrentPlaceComponent implements OnInit{
 
   public handleToggleFavorite() {
     if (!this.isFavoritePlace) {
-      this.store.dispatch(FavoritesActions.setPlace({ key: this.currentPlaceKey}));
+      this.store.dispatch(FavoritesActions.setPlace({ places: this.currentPlace}));
     } else {
-      this.store.dispatch(FavoritesActions.removePlace({ key: this.currentPlaceKey}));
+      this.store.dispatch(FavoritesActions.removePlace({ key: this.currentPlace.key}));
     }
-  }
-
-  private checkIsFavorite() {
-    this.store.select(selectFavoritesKeys).pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(favoritesList => {
-        this.isFavoritePlace = favoritesList.includes(this.currentPlaceKey);
-      });
   }
 
   private getForecastViewType() {
@@ -102,5 +95,24 @@ export class CurrentPlaceComponent implements OnInit{
       this.forecastDisplayType = type;
       this.isForecastChart = type === FORECAST_VIEW_TYPE.chartDayNight || type === FORECAST_VIEW_TYPE.chartAvg;
     })
+  }
+
+  private getCurrentPlaceFromStore() {
+    this.store.select(selectCurrentPlaceCurrentData)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((currenPlace) => {
+        this.currentPlace = currenPlace;
+      });
+  }
+
+  private checkIsFavorite(key: string){
+    this.store.select(selectIsFavorite).pipe(
+      takeUntilDestroyed(this.destroyRef))
+      .subscribe((isFavorite => {
+        console.log('CHECK FAVORITE', isFavorite);
+        this.isFavoritePlace = isFavorite;
+      }));
   }
 }

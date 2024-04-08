@@ -1,26 +1,26 @@
 import { createReducer, on } from '@ngrx/store';
-import { CurrentPlaceActions } from '../../current-place/store/current-place.actions';
 import { FavoritesActions } from './favorites.actions';
+import { PlaceWithCurrentWeather } from '../../public.interfaces';
 
 export interface FavoritesState {
   isFavoritesLoading: boolean;
-  favoritesKeys: string[];
+  favoritePlacesWithWeather: PlaceWithCurrentWeather[];
 }
 
 export const initialState: FavoritesState = {
   isFavoritesLoading: false,
-  favoritesKeys: []
+  favoritePlacesWithWeather: [],
 };
 
 export const favoritesReducer = createReducer(
   initialState,
-  on(FavoritesActions.setPlace, (state, { key }) => ({
+  on(FavoritesActions.setPlace, (state, { places }) => ({
     ...state,
-    favoritesKeys: [...state.favoritesKeys, key],
+    favoritePlacesWithWeather: places instanceof Array ? [...state.favoritePlacesWithWeather, ...places] : [...state.favoritePlacesWithWeather, places],
   })),
   on(FavoritesActions.removePlace, (state, { key }) => ({
     ...state,
-    favoritesKeys: state.favoritesKeys.filter(placeKey => placeKey !== key),
+    favoritePlacesWithWeather: state.favoritePlacesWithWeather.filter(place => place.key !== key),
   })),
 );
 
