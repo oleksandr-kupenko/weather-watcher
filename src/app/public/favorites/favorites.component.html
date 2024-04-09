@@ -1,8 +1,8 @@
 @if (isLoading$ | async) {
   <mat-spinner diameter="50"></mat-spinner>
 } @else {
-  <div class="weather-container">
-    @if (favoritePlaces.length) {
+  @if (favoritePlaces.length) {
+    <div class="weather-container">
       @for (place of favoritePlaces; track favoritePlaces) {
         <mat-card class="weather-card">
           <mat-card-header>
@@ -31,15 +31,15 @@
               class="hover-buttons__close-btn"
               mat-icon-button
               color="warn"
-              (click)="handleRemovePlace(place.key)"
+              (click)="handleRemovePlace(place.key); $event.stopPropagation()"
             >
               <mat-icon>close</mat-icon>
             </button>
           </div>
         </mat-card>
       }
-    } @else {
-      <p class="weather-container__empty">List is empty</p>
-    }
-  </div>
+    </div>
+  } @else {
+    <p class="weather-container__empty">List is empty</p>
+  }
 }

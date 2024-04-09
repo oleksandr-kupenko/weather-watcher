@@ -76,8 +76,6 @@ export class FavoritesComponent implements OnInit {
     this.store
       .select(selectCurrentPlaceCurrentData)
       .pipe(take(1))
-      .subscribe((place) => {
-        console.log('NEW PLACE', place);
-      });
+      .subscribe((place) => {});
   }
 }

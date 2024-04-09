@@ -9,7 +9,7 @@ export class NotificationService {
 
   showNotification(message: string, type: 'info' | 'error' | 'warning' | 'success') {
     const config: MatSnackBarConfig = {
-      duration: 3000000,
+      duration: 3000,
       panelClass: this.getSnackBarClass(type),
       horizontalPosition: 'center',
       verticalPosition: 'bottom',

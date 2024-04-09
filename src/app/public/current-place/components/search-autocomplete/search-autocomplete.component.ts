@@ -66,10 +66,9 @@ export class SearchAutocompleteComponent implements OnInit {
       tap(() => (this.isDataLoading = true)),
       debounceTime(500),
       switchMap((value) => {
-        return this.searchAutocompleteService.getPlacePredictions(value).pipe(
-          tap((data) => console.log(data)),
-          finalize(() => (this.isDataLoading = false)),
-        );
+        return this.searchAutocompleteService
+          .getPlacePredictions(value)
+          .pipe(finalize(() => (this.isDataLoading = false)));
       }),
     );
   }

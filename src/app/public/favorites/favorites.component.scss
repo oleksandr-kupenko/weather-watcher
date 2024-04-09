@@ -12,14 +12,16 @@
 
   .weather-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 300px));
     grid-gap: 20px;
     max-width: 1100px;
+    justify-content: center;
     margin: 0 auto;
 
     &__empty {
       margin-top: 40vh;
       text-align: center;
+      color: var(--main-dark-contrast);
     }
 
     app-accuweather-icon {
@@ -48,6 +50,11 @@
         background-color: rgba(0, 0, 0, 0.05);
         opacity: 0;
         transition: opacity 0.3s;
+        z-index: 1;
+
+        &__close-btn {
+          z-index: 10;
+        }
       }
 
       &:hover .hover-buttons {
@@ -56,4 +63,3 @@
     }
   }
 }
-

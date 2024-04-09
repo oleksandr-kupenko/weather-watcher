@@ -34,7 +34,7 @@ export const favoritesReducer = createReducer(
   on(FavoritesActions.getFavoritesWeather, (state) => {
     return {
       ...state,
-      isFavoritesLoading: true,
+      isFavoritesLoading: !!state.favoritePlacesWithWeather.length,
     };
   }),
   on(FavoritesActions.favoritesWeatherLoadedSuccess, (state, { favoritesWeatherArr }) => {
