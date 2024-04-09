@@ -8,11 +8,22 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PlaceWithCurrentWeather } from '../../../public.interfaces';
 import { EmojiFlagComponent } from '../../../shared/components/emoji-flag.component';
+import { AccuweatherIconComponent } from '../../../shared/components/accuweather-icon.component';
 
 @Component({
   selector: 'current-place-weather',
   standalone: true,
-  imports: [MatIcon, MatIconButton, NgIf, AsyncPipe, NgOptimizedImage, MatTooltip, MatButtonModule, EmojiFlagComponent],
+  imports: [
+    MatIcon,
+    MatIconButton,
+    NgIf,
+    AsyncPipe,
+    NgOptimizedImage,
+    MatTooltip,
+    MatButtonModule,
+    EmojiFlagComponent,
+    AccuweatherIconComponent,
+  ],
   templateUrl: './current-weather.component.html',
   styleUrl: './current-weather.component.scss',
 })

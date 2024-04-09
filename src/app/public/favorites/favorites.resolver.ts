@@ -12,18 +12,20 @@ export const favoritesResolver = (route: ActivatedRouteSnapshot, state: RouterSt
   const store = inject(Store);
   const favoritesService = inject(FavoritesService);
 
-  return store.select(selectFavoritesPlaces)
-    .pipe(take(1), map((favoritesPlaces) => {
+  return store.select(selectFavoritesPlaces).pipe(
+    take(1),
+    map((favoritesPlaces) => {
       if (favoritesPlaces.length) {
         return favoritesPlaces;
       } else {
-        const savedFavorites = favoritesService.getFavoritesFromStore();
+        const savedFavorites = favoritesService.getSavedFavoritesPlaces();
         if (savedFavorites) {
-          store.dispatch(FavoritesActions.setPlace({ places: savedFavorites }) );
+          store.dispatch(FavoritesActions.setPlace({ places: savedFavorites }));
           return savedFavorites;
         } else {
           return [];
         }
       }
-    }));
+    }),
+  );
 };

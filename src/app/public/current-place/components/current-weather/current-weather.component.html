@@ -1,19 +1,22 @@
 @if (currentPlaceWithWeather) {
   <div class="current-weather">
     @if (currentPlaceWithWeather.currentTemperature) {
-    <div class="current-weather__img-container" [class.with-border]="!currentPlaceWithWeather.iconNumber">
-      @if (currentPlaceWithWeather.iconNumber) {
-        <img
-          [src]="'https://apidev.accuweather.com/developers/Media/Default/WeatherIcons/' + currentPlaceWithWeather.iconNumber + '-s.png'"
-          [alt]="'Weather in ' + currentPlaceWithWeather.name"
-        />
-      }
-    </div>
+      <div class="current-weather__img-container" [class.with-border]="!currentPlaceWithWeather.iconNumber">
+        @if (currentPlaceWithWeather.iconNumber) {
+          <app-accuweather-icon
+            [iconNumber]="currentPlaceWithWeather.iconNumber"
+            [alt]="'Current weather in ' + currentPlaceWithWeather.name"
+          ></app-accuweather-icon>
+        }
+      </div>
 
       <div class="current-weather__city--info">
         <h2>
           {{ currentPlaceWithWeather.name }}
-          <app-emoji-flag [tooltip]="currentPlaceWithWeather.countryData.LocalizedName" [countryCode]="currentPlaceWithWeather.countryData.ID"></app-emoji-flag>
+          <app-emoji-flag
+            [tooltip]="currentPlaceWithWeather.countryData.LocalizedName"
+            [countryCode]="currentPlaceWithWeather.countryData.ID"
+          ></app-emoji-flag>
         </h2>
         <div class="current-weather__city--values">
           <p>

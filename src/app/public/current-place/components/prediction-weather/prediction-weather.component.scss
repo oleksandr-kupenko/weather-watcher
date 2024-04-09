@@ -35,13 +35,12 @@
       }
 
       mat-card-subtitle {
-        color: rgba(0, 0, 0, 0.54);
+        color: var(--light-contrast);
       }
     }
 
     mat-card-content {
       margin-top: 10px;
-
     }
   }
 }

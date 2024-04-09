@@ -1,11 +1,21 @@
 <mat-toolbar color="primary">
-  <span>Weather App</span>
-  <span class="spacer"></span>
-  <nav>
-    <a mat-button routerLink="/">Home</a>
-    <a mat-button routerLink="/favorites">Favorites</a>
+  <span class="desktop-title mobile-hidden">Weather App</span>
+  <span class="mobile-title">WA</span>
+
+  <nav class="main-nav">
+    <a mat-button routerLinkActive="active-link" routerLink="/home">
+      <mat-icon>home</mat-icon>
+      <span class="mobile-hidden">Home</span>
+    </a>
+    <a mat-button routerLinkActive="active-link" routerLink="/favorites">
+      <mat-icon>favorite</mat-icon>
+      <span class="mobile-hidden">Favorites</span>
+    </a>
   </nav>
-  <mat-slide-toggle [(ngModel)]="isDarkTheme">Dark Theme</mat-slide-toggle>
+  <span class="spacer"></span>
+  <mat-slide-toggle [color]="'primary'" [ngModel]="isDarkTheme$ | async" (ngModelChange)="handleChangeTheme($event)">
+    <span class="mat-slide-toggle__label">Dark Theme</span>
+  </mat-slide-toggle>
 </mat-toolbar>
 <div class="container">
   <router-outlet></router-outlet>

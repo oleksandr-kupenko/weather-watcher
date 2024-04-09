@@ -3,7 +3,7 @@
     <ng-content></ng-content>
   </div>
 
-  <div class="forecast weather-card" >
+  <div class="forecast weather-card">
     <mat-card *ngFor="let day of forecast.forecast">
       <mat-card-header>
         <mat-card-title>{{ day.date | date: 'EEEE' }}</mat-card-title>
@@ -14,26 +14,32 @@
           @if (day.dayInfo.iconNumber) {
             <div class="forecast__icons--container" [matTooltip]="day.nightInfo.description">
               <span class="weather-card__extra-info">Day</span>
-              <app-accuweather-icon [iconNumber]="day.nightInfo.iconNumber"
+              <app-accuweather-icon
+                [iconNumber]="day.nightInfo.iconNumber"
                 [alt]="'Weather in ' + day.dayInfo.description"
               ></app-accuweather-icon>
             </div>
           }
           @if (day.nightInfo.iconNumber) {
-            <div class="forecast__icons-- weather-card__extra-info" [matTooltip]="day.nightInfo.description">
+            <div class="forecast__icons--container weather-card__extra-info" [matTooltip]="day.nightInfo.description">
               <span class="weather-card__extra-info">Night</span>
-              <app-accuweather-icon [iconNumber]="day.nightInfo.iconNumber"
-                                    [alt]="'Weather in ' + day.nightInfo.description"
+              <app-accuweather-icon
+                [iconNumber]="day.nightInfo.iconNumber"
+                [alt]="'Weather in ' + day.nightInfo.description"
               ></app-accuweather-icon>
             </div>
           }
         </div>
-        <p class="forecast__temperature"><span class="forecast__temperature--type weather-card__extra-info--light ">Min:</span> {{ day.minTemperature }}°</p>
-        <p class="forecast__temperature"><span class="forecast__temperature--type weather-card__extra-info--light ">Max:</span> {{ day.maxTemperature }}°</p>
-
+        <p class="forecast__temperature">
+          <span class="forecast__temperature--type weather-card__extra-info--light">Min:</span>
+          {{ day.minTemperature }}°
+        </p>
+        <p class="forecast__temperature">
+          <span class="forecast__temperature--type weather-card__extra-info--light">Max:</span>
+          {{ day.maxTemperature }}°
+        </p>
       </mat-card-content>
     </mat-card>
   </div>
   <p class="predict-description weather-card__extra-info">{{ forecast.description }}</p>
 }
-

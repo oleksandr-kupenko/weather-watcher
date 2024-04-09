@@ -4,6 +4,24 @@
   min-height: 100vh;
   height: 100%;
 
+  mat-toolbar {
+    min-height: 50px;
+    margin-bottom: 30px;
+
+    .mobile-title {
+      display: none;
+    }
+  }
+
+  .main-nav {
+    margin-left: 20px;
+
+    .active-link {
+      font-weight: bold;
+      color: var(--active-contrast-secondary);
+    }
+  }
+
   .spacer {
     flex: 1 1 auto;
   }
@@ -13,6 +31,28 @@
     height: 100%;
   }
 
+  .mat-slide-toggle {
+    &__label {
+      padding-left: 5px;
+      color: ghostwhite;
+    }
+  }
+
+  @media screen and (max-width: 576px) {
+    .mobile-hidden {
+      display: none;
+    }
+
+    .main-nav {
+      mat-icon {
+        font-size: 30px;
+        height: 30px;
+        width: 30px;
+      }
+    }
+
+    .mobile-title {
+      display: block !important;
+    }
+  }
 }
-
-

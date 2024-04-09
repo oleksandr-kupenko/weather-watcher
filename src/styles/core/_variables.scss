@@ -1,8 +1,22 @@
 :root {
+  --main-dark-contrast: #1e1d1d;
   --active-contrast: darkgreen;
-  --alt-active-contrast: #18189b;;
+  --active-contrast-secondary: #cccc41;
+  --alt-active-contrast: #18189b;
   --blue-contrast: #0c0c5b;
   --green-contrast: #0f621d;
   --light-contrast: rgba(0, 0, 0, 0.54);
   --extra-light-contrast: darkgray;
+  --background-color: white;
+
+  .dark-theme {
+    --main-dark-contrast: antiquewhite;
+    --active-contrast: lightgreen;
+    --alt-active-contrast: #8c8cff;
+    --blue-contrast: #8c8cff;
+    --green-contrast: #8cff8c;
+    --light-contrast: rgba(255, 255, 255, 0.7);
+    --extra-light-contrast: lightgray;
+    --background-color: #121212;
+  }
 }

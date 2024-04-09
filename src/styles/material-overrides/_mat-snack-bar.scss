@@ -16,23 +16,23 @@ mat-snack-bar-container.mat-mdc-snack-bar-container {
     color: lightgrey;
   }
 
+  .mdc-snackbar__label {
+    color: whitesmoke;
+  }
+
   &.snackbar-success .mdc-snackbar__surface {
     background-color: #0b790b;
-    color: #ffffff;
   }
 
   &.snackbar-error .mdc-snackbar__surface {
     background-color: #f44336;
-    color: #ffffff;
   }
 
   &.snackbar-warning .mdc-snackbar__surface {
     background-color: #ff9800;
-    color: #ffffff;
   }
 
   &.snackbar-info .mdc-snackbar__surface {
     background-color: #0c426c;
-    color: #ffffff;
   }
 }

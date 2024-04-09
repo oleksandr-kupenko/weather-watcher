@@ -33,7 +33,7 @@ import { EmojiFlagComponent } from '../shared/components/emoji-flag.component';
   styleUrl: './favorites.component.scss',
 })
 export class FavoritesComponent implements OnInit {
-  public isLoading = this.store.select(selectFavoriteLoadingStatus);
+  public isLoading$ = this.store.select(selectFavoriteLoadingStatus);
 
   public favoritePlaces: PlaceWithCurrentWeather[] = this.route.snapshot.data['savedFavorites'];
 

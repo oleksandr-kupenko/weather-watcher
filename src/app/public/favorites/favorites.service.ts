@@ -6,29 +6,34 @@ import { PublicService } from '../public.service';
 import { PlaceWithCurrentWeather } from '../public.interfaces';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FavoritesService {
   private apiKey = 'YOUR_API_KEY';
   private baseUrl = 'http://dataservice.accuweather.com';
 
-  constructor(private http: HttpClient, private publicService: PublicService) { }
+  constructor(
+    private http: HttpClient,
+    private publicService: PublicService,
+  ) {}
 
   getCurrentWeatherList(favoritePlaces: PlaceWithCurrentWeather[]): Observable<PlaceWithCurrentWeather[]> {
-    const requests = favoritePlaces.map(place => this.publicService.getPlaceWeather(place.key).pipe(
-      map(response => {
-        return {
-          ...place,
-          currentTemperature: response.Temperature.Metric.Value,
-          iconNumber: response.WeatherIcon,
-          description: response.WeatherText
-        };
-      })
-    ));
+    const requests = favoritePlaces.map((place) =>
+      this.publicService.getPlaceWeather(place.key).pipe(
+        map((response) => {
+          return {
+            ...place,
+            currentTemperature: response.Temperature.Metric.Value,
+            iconNumber: response.WeatherIcon,
+            description: response.WeatherText,
+          };
+        }),
+      ),
+    );
     return forkJoin(requests).pipe(delay(1000));
   }
 
-  getFavoritesFromStore(): PlaceWithCurrentWeather[] | null {
+  getSavedFavoritesPlaces(): PlaceWithCurrentWeather[] | null {
     const savedFavorites = localStorage.getItem('favorites');
     if (savedFavorites) {
       return JSON.parse(savedFavorites);

@@ -7,15 +7,21 @@ import { Component, Input } from '@angular/core';
   template: `<img
     [src]="'https://apidev.accuweather.com/developers/Media/Default/WeatherIcons/' + iconNumber + '-s.png'"
     [alt]="alt"
-  />
-  `,
-  styles: [`
-    :host {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  `],
+  /> `,
+  styles: [
+    `
+      :host {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+
+        img {
+          width: 100%;
+        }
+      }
+    `,
+  ],
 })
 export class AccuweatherIconComponent {
   @Input() iconNumber!: number | null;

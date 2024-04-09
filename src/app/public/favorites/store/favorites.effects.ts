@@ -10,7 +10,6 @@ import { NotificationService } from '../../shared/notification.service';
 
 @Injectable()
 export class FavoritesEffects {
-
   loadFavoritesWeather = createEffect(() =>
     this.actions$.pipe(
       ofType(FavoritesActions.getFavoritesWeather),
@@ -25,7 +24,7 @@ export class FavoritesEffects {
     ),
   );
 
-  saveFavoritesToLocalStorage = createEffect(() =>
+  saveFavorites = createEffect(() =>
     this.actions$.pipe(
       ofType(FavoritesActions.setPlace, FavoritesActions.removePlace),
       exhaustMap((action) => {
@@ -35,10 +34,12 @@ export class FavoritesEffects {
             try {
               this.favoritesService.saveFavoritesToStore(favorites);
               if (action.type === FavoritesActions.setPlace.type) {
-                action.showNotification && this.notificationService.showNotification('Added to favorites list', 'success');
+                action.showNotification &&
+                  this.notificationService.showNotification('Added to favorites list', 'success');
                 return of(FavoritesActions.favoritesListSavedSuccess({ action: 'add' }));
               } else {
-                action.showNotification && this.notificationService.showNotification('Removed from favorites list', 'info');
+                action.showNotification &&
+                  this.notificationService.showNotification('Removed from favorites list', 'info');
                 return of(FavoritesActions.favoritesListSavedSuccess({ action: 'remove' }));
               }
             } catch (error) {
@@ -46,10 +47,9 @@ export class FavoritesEffects {
               this.notificationService.showNotification('Failed to save', 'error');
               return of(FavoritesActions.favoritesListSavedFailure({ error: 'Local Storage not available' }));
             }
-          })
-        )
-        }
-      ),
+          }),
+        );
+      }),
     ),
   );
 
@@ -57,6 +57,6 @@ export class FavoritesEffects {
     private actions$: Actions,
     private favoritesService: FavoritesService,
     private store: Store,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
   ) {}
 }
