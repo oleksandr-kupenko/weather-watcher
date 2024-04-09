@@ -1,30 +1,29 @@
-# Weather watcher
+# Weather Watcher
 
 ## Stack
-- Angular 17
-- NgRx
-- AngularMaterial
-- Echarts
+1. Angular 17
+2. NgRx
+3. Angular Material
+4. Echarts
 
-## How to use
-- [Get an api key from the accuweather service](https://developer.accuweather.com/user/register)
-- Clone the project
-- ## Commands
-```bash
-git clone https://github.com/oleksandr-kupenko/weather-watcher
-```
-- install dependencies
-```bash
-npm i
-```
-- paste apiKey to src/environments/environment
--start the server
-- ```bash
-ng s
-```
-- ## Screanshots
+## How to Use
+1. [Get an API key from the AccuWeather service](https://developer.accuweather.com/user/register)
+2. Clone the project
+    ```bash
+    git clone https://github.com/oleksandr-kupenko/weather-watcher
+    ```
+3. Install dependencies
+    ```bash
+    npm i
+    ```
+4. Paste the API key into `src/environments/environment`
+5. Start the server
+    ```bash
+    ng s
+    ```
 
-<img src="screenshots/1.png" style="margin-top: 20px; border: 1px solid #ccc; border-radius: 5px;" alt="App screenshot" width="50%">
+## Screenshots
 
+![Example](screenshots/1.png)
 
-<img src="screenshots/2.png" style="margin-top: 20px; border: 1px solid #ccc; border-radius: 5px;" alt="App screenshot" width="50%">
+![Example](screenshots/2.png)
