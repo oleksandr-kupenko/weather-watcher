@@ -2,15 +2,9 @@ import { ApplicationConfig, importProvidersFrom, isDevMode } from '@angular/core
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideStore, StoreModule } from '@ngrx/store';
+import { provideStore } from '@ngrx/store';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import {
-  HTTP_INTERCEPTORS,
-  HttpClientModule,
-  provideHttpClient,
-  withInterceptors,
-  withInterceptorsFromDi,
-} from '@angular/common/http';
+import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { apiReducers } from './store/app.reducer';
 import { provideEffects } from '@ngrx/effects';

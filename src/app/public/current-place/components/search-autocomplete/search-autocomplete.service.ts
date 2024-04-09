@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { searchResultMock } from './search.mock';
 import { PlaceAutoCompletePrediction } from './search-autocomplete.interfaces';
 import { environment } from '@environments/environment';
 

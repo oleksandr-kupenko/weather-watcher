@@ -9,8 +9,6 @@ import { Store } from '@ngrx/store';
 import { UiSettingsActions } from './shared/ui-settings/store/ui-settings.actions';
 import { selectDarkModeStatus } from './shared/ui-settings/store/ui-serrings.selectors';
 import { AsyncPipe } from '@angular/common';
-import { selectIsFavorite } from './favorites/store/favorites.selectors';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-public-wrapper',
@@ -37,13 +35,4 @@ export class PublicWrapperComponent {
   public handleChangeTheme(value: boolean) {
     this.store.dispatch(UiSettingsActions.setDarkModeStatus({ status: value }));
   }
-
-  // private checkIsDarkMode(key: string) {
-  //   this.store
-  //     .select(selectIsFavorite)
-  //     .pipe(takeUntilDestroyed(this.destroyRef))
-  //     .subscribe((isFavorite) => {
-  //       this.isFavoritePlace = isFavorite;
-  //     });
-  // }
 }
