@@ -1,23 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { delay, forkJoin, Observable } from 'rxjs';
+import { delay, forkJoin, Observable, tap } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PublicService } from '../public.service';
 import { PlaceWithCurrentWeather } from '../public.interfaces';
+import { environment } from '@environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FavoritesService {
-  private apiKey = 'YOUR_API_KEY';
-  private baseUrl = 'http://dataservice.accuweather.com';
+  private baseUrl = environment.apiBaseUrl;
 
-  constructor(
-    private http: HttpClient,
-    private publicService: PublicService,
-  ) {}
+  constructor(private publicService: PublicService) {}
 
-  getCurrentWeatherList(favoritePlaces: PlaceWithCurrentWeather[]): Observable<PlaceWithCurrentWeather[]> {
+  getCurrentFavoritesCurrentWeather(favoritePlaces: PlaceWithCurrentWeather[]): Observable<PlaceWithCurrentWeather[]> {
     const requests = favoritePlaces.map((place) =>
       this.publicService.getPlaceWeather(place.key).pipe(
         map((response) => {
@@ -30,7 +27,7 @@ export class FavoritesService {
         }),
       ),
     );
-    return forkJoin(requests).pipe(delay(1000));
+    return forkJoin(requests);
   }
 
   getSavedFavoritesPlaces(): PlaceWithCurrentWeather[] | null {

@@ -3,7 +3,7 @@ import { CurrentWeather, PlaceLocationInfo } from '../components/current-weather
 import { CountryData } from '../components/search-autocomplete/search-autocomplete.interfaces';
 import {
   WeatherForecast,
-  WeatherForecastResponse
+  WeatherForecastResponse,
 } from '../components/prediction-weather/prediction-weater.interfaces';
 import { FORECAST_VIEW_TYPE } from '../components/prediction-weather-chart/prediction-weather-chart.interfaces';
 
@@ -12,24 +12,27 @@ export const CurrentPlaceActions = {
 
   setCurrentPlace: createAction(
     '[Current Placer] Set Current Place Key',
-    props<{ key: string; name: string; countryData: CountryData }>(),
+    props<{ key: string; name: string | null; countryData: CountryData | null }>(),
   ),
 
   setToDefaultCurrentPlace: createAction('[Current Placer] Set to Default Current Place'),
 
-  getCurrentPlaceLocationInfo: createAction('[Current Placer] Get Current Place Location Info', props<{ key: string }>()),
+  getCurrentPlaceLocationInfo: createAction(
+    '[Current Placer] Get Current Place Location Info',
+    props<{ key: string }>(),
+  ),
 
   locationInfoLoadedSuccess: createAction(
     '[Current Placer] Location Info Loaded Success',
     props<{ locationInfo: PlaceLocationInfo }>(),
   ),
 
-  locationInfoLoadedFailure: createAction(
-    '[Current Placer] Location Info Loaded Failure',
-    props<{ error: string }>(),
-  ),
+  locationInfoLoadedFailure: createAction('[Current Placer] Location Info Loaded Failure', props<{ error: string }>()),
 
-  getCurrentPlaceCurrentWeather: createAction('[Current Placer] Get Current Place Current Weather', props<{ key: string }>()),
+  getCurrentPlaceCurrentWeather: createAction(
+    '[Current Placer] Get Current Place Current Weather',
+    props<{ key: string }>(),
+  ),
 
   currentPlaceWeatherLoadedSuccess: createAction(
     '[Current Placer] Current Place Weather Loaded Success',
@@ -53,5 +56,8 @@ export const CurrentPlaceActions = {
     props<{ error: string }>(),
   ),
 
-  setPredictionDataDisplayType: createAction('[Current Placer] Set Prediction Data Type', props<{ displayType: FORECAST_VIEW_TYPE }>())
+  setPredictionDataDisplayType: createAction(
+    '[Current Placer] Set Prediction Data Type',
+    props<{ displayType: FORECAST_VIEW_TYPE }>(),
+  ),
 };

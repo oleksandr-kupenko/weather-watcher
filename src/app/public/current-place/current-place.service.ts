@@ -1,35 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { delay, Observable, of, switchMap, tap } from 'rxjs';
+import { Observable, of, switchMap, tap } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { CurrentWeather, PlaceLocationInfo } from './components/current-weather/current-weather.interface';
-import { currentPlaceMock } from './current-place.mock';
+import { PlaceLocationInfo } from './components/current-weather/current-weather.interface';
+
 import {
   ForecastDay,
-  ForecastPartDay,
   WeatherForecast,
   WeatherForecastResponse,
 } from './components/prediction-weather/prediction-weater.interfaces';
 import { predictionMock } from './components/prediction-weather/prediction.mock';
+import { environment } from '@environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CurrentPlaceService {
-  private apiKey = 'ur2EzZIFTszrCMATM2goNKe9e3H4BJqy';
-  private baseUrl = 'http://dataservice.accuweather.com';
+  private baseUrl = environment.apiBaseUrl;
 
   constructor(private http: HttpClient) {}
 
   getPlaceLocationData(locationKey: string): Observable<PlaceLocationInfo> {
-    const url = `${this.baseUrl}/locations/v1/${locationKey}?apikey=${this.apiKey}`;
+    const url = `${this.baseUrl}/locations/v1/${locationKey}`;
 
     return this.http.get<PlaceLocationInfo>(url);
   }
 
   getCurrentPredictedWeatherByDays(locationKey: string): Observable<WeatherForecast> {
-    const url = `${this.baseUrl}/forecasts/v1/daily/5day/${locationKey}?&metric=true&apikey=${this.apiKey}`;
-    return of(predictionMock).pipe(
+    const url = `${this.baseUrl}/forecasts/v1/daily/5day/${locationKey}?&metric=true`;
+    return this.http.get<WeatherForecastResponse>(url).pipe(
       map((data) => {
         return {
           description: data.Headline.Text,
@@ -37,13 +36,6 @@ export class CurrentPlaceService {
         };
       }),
     );
-
-    // return this.http.get<WeatherForecastResponse>(url).pipe(map((data) => {
-    //   return {
-    //     description: data.Headline.Text,
-    //     forecast: this.forecastToArrayAdapter(data)
-    //   }
-    // }))
   }
 
   private forecastToArrayAdapter(forecast: WeatherForecastResponse): ForecastDay[] {

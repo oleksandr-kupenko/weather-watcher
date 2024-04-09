@@ -14,7 +14,7 @@ export class FavoritesEffects {
     this.actions$.pipe(
       ofType(FavoritesActions.getFavoritesWeather),
       exhaustMap(({ places }) =>
-        this.favoritesService.getCurrentWeatherList(places).pipe(
+        this.favoritesService.getCurrentFavoritesCurrentWeather(places).pipe(
           map((favoritesWeatherArr) => {
             return FavoritesActions.favoritesWeatherLoadedSuccess({ favoritesWeatherArr: favoritesWeatherArr });
           }),

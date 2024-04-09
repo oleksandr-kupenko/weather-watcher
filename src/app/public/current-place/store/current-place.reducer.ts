@@ -2,21 +2,13 @@ import { ActionReducer, createReducer, on } from '@ngrx/store';
 import { CurrentPlaceActions } from './current-place.actions';
 import { WeatherForecast } from '../components/prediction-weather/prediction-weater.interfaces';
 import { FORECAST_VIEW_TYPE } from '../components/prediction-weather-chart/prediction-weather-chart.interfaces';
-import { PlaceWithCurrentWeather } from '../../public.interfaces';
+import { PlaceFabric, PlaceWithCurrentWeather, PlaceWithCurrentWeatherWithoutKey } from '../../public.interfaces';
 
-const defaultPlace: PlaceWithCurrentWeather = {
-  key: '324505',
-  currentTemperature: null,
-  name: 'Kyiv',
-  iconNumber: null,
-  countryData: { ID: 'ua', LocalizedName: 'Ukraine' },
-  description: null,
-};
 export interface CurrentPlaceState {
   isCurrentPlaceCurrentWeatherLoading: boolean;
   isPredictionDataLoading: boolean;
   isLocationDataLoading: boolean;
-  placeCurrentData: PlaceWithCurrentWeather;
+  placeCurrentData: PlaceWithCurrentWeatherWithoutKey;
   predictionDataByDays: WeatherForecast | null;
   displayForecastType: FORECAST_VIEW_TYPE;
 }
@@ -24,7 +16,7 @@ export const initialState: CurrentPlaceState = {
   isCurrentPlaceCurrentWeatherLoading: false,
   isPredictionDataLoading: false,
   isLocationDataLoading: false,
-  placeCurrentData: defaultPlace,
+  placeCurrentData: new PlaceFabric(null, null, null),
   predictionDataByDays: null,
   displayForecastType: FORECAST_VIEW_TYPE.cards,
 };
@@ -36,8 +28,8 @@ export const currentPlaceReducer: ActionReducer<CurrentPlaceState> = createReduc
     placeCurrentData: {
       ...state.placeCurrentData,
       key,
-      name,
-      countryData,
+      name: name ? name : '',
+      countryData: countryData ? countryData : initialState.placeCurrentData.countryData,
     },
   })),
 

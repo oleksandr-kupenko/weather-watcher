@@ -9,7 +9,7 @@
     [displayWith]="handleGetOptionText"
     (optionSelected)="handlePlaceSelected($event)"
   >
-    @for (prediction of predictions | async; track predictions) {
+    @for (prediction of predictions$ | async; track predictions$) {
       <mat-option [value]="prediction">
         {{ prediction.LocalizedName }}
       </mat-option>

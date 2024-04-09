@@ -4,42 +4,44 @@
   </div>
 
   <div class="forecast weather-card">
-    <mat-card *ngFor="let day of forecast.forecast">
-      <mat-card-header>
-        <mat-card-title>{{ day.date | date: 'EEEE' }}</mat-card-title>
-        <mat-card-subtitle>{{ day.date | date: 'MMM d, y' }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="forecast__icons">
-          @if (day.dayInfo.iconNumber) {
-            <div class="forecast__icons--container" [matTooltip]="day.nightInfo.description">
-              <span class="weather-card__extra-info">Day</span>
-              <app-accuweather-icon
-                [iconNumber]="day.nightInfo.iconNumber"
-                [alt]="'Weather in ' + day.dayInfo.description"
-              ></app-accuweather-icon>
-            </div>
-          }
-          @if (day.nightInfo.iconNumber) {
-            <div class="forecast__icons--container weather-card__extra-info" [matTooltip]="day.nightInfo.description">
-              <span class="weather-card__extra-info">Night</span>
-              <app-accuweather-icon
-                [iconNumber]="day.nightInfo.iconNumber"
-                [alt]="'Weather in ' + day.nightInfo.description"
-              ></app-accuweather-icon>
-            </div>
-          }
-        </div>
-        <p class="forecast__temperature">
-          <span class="forecast__temperature--type weather-card__extra-info--light">Min:</span>
-          {{ day.minTemperature }}°
-        </p>
-        <p class="forecast__temperature">
-          <span class="forecast__temperature--type weather-card__extra-info--light">Max:</span>
-          {{ day.maxTemperature }}°
-        </p>
-      </mat-card-content>
-    </mat-card>
+    @for (day of forecast.forecast; track forecast.forecast) {
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{ day.date | date: 'EEEE' }}</mat-card-title>
+          <mat-card-subtitle>{{ day.date | date: 'MMM d, y' }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="forecast__icons">
+            @if (day.dayInfo.iconNumber) {
+              <div class="forecast__icons--container" [matTooltip]="day.nightInfo.description">
+                <span class="weather-card__extra-info">Day</span>
+                <app-accuweather-icon
+                  [iconNumber]="day.nightInfo.iconNumber"
+                  [alt]="'Weather in ' + day.dayInfo.description"
+                ></app-accuweather-icon>
+              </div>
+            }
+            @if (day.nightInfo.iconNumber) {
+              <div class="forecast__icons--container weather-card__extra-info" [matTooltip]="day.nightInfo.description">
+                <span class="weather-card__extra-info">Night</span>
+                <app-accuweather-icon
+                  [iconNumber]="day.nightInfo.iconNumber"
+                  [alt]="'Weather in ' + day.nightInfo.description"
+                ></app-accuweather-icon>
+              </div>
+            }
+          </div>
+          <p class="forecast__temperature">
+            <span class="forecast__temperature--type weather-card__extra-info--light">Min:</span>
+            {{ day.minTemperature }}°
+          </p>
+          <p class="forecast__temperature">
+            <span class="forecast__temperature--type weather-card__extra-info--light">Max:</span>
+            {{ day.maxTemperature }}°
+          </p>
+        </mat-card-content>
+      </mat-card>
+    }
   </div>
   <p class="predict-description weather-card__extra-info">{{ forecast.description }}</p>
 }

@@ -75,7 +75,6 @@ export class CurrentPlaceComponent implements OnInit {
         countryData: place.Country,
       }),
     );
-
     this.store.dispatch(CurrentPlaceActions.getCurrentPlaceCurrentWeather({ key: place.Key }));
     this.store.dispatch(CurrentPlaceActions.getPredictWeatherByDays({ key: place.Key }));
   }

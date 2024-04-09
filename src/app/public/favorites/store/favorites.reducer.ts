@@ -18,35 +18,37 @@ export const favoritesReducer = createReducer(
   //add or remove
   on(FavoritesActions.setPlace, (state, { places }) => ({
     ...state,
-    favoritePlacesWithWeather: places instanceof Array ? [...state.favoritePlacesWithWeather, ...places] : [...state.favoritePlacesWithWeather, places],
+    favoritePlacesWithWeather:
+      places instanceof Array
+        ? [...state.favoritePlacesWithWeather, ...places]
+        : [...state.favoritePlacesWithWeather, places],
   })),
   on(FavoritesActions.removePlace, (state, { key }) => {
-     return ({
-        ...state,
-        favoritePlacesWithWeather: state.favoritePlacesWithWeather.filter(place => place.key !== key)
-      });
-    }
-  ),
+    return {
+      ...state,
+      favoritePlacesWithWeather: state.favoritePlacesWithWeather.filter((place) => place.key !== key),
+    };
+  }),
 
   // loading
   on(FavoritesActions.getFavoritesWeather, (state) => {
-      return ({
-        ...state,
-        isFavoritesLoading: true
-      });
-    }
-  ),
-  on(FavoritesActions.favoritesWeatherLoadedSuccess, (state) => {
-    return ({
+    return {
       ...state,
-      isFavoritesLoading: false
-    });
+      isFavoritesLoading: true,
+    };
+  }),
+  on(FavoritesActions.favoritesWeatherLoadedSuccess, (state, { favoritesWeatherArr }) => {
+    return {
+      ...state,
+      favoritePlacesWithWeather: favoritesWeatherArr,
+      isFavoritesLoading: false,
+    };
   }),
   on(FavoritesActions.favoritesWeatherLoadedFailure, (state) => {
-    return ({
+    return {
       ...state,
-      isFavoritesLoading: false
-    });
+      isFavoritesLoading: false,
+    };
   }),
 );
 

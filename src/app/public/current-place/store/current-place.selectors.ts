@@ -9,7 +9,7 @@ export const selectCurrentPlaceState = createFeatureSelector<CurrentPlaceState>(
 export const selectCurrentPlaceCurrentData = createSelector(
   selectCurrentPlaceState,
   (state): PlaceWithCurrentWeather => {
-    return state.placeCurrentData;
+    return state.placeCurrentData as PlaceWithCurrentWeather;
   },
 );
 
@@ -20,17 +20,10 @@ export const selectCurrentPlacePredictedData = createSelector(
   },
 );
 
-export const selectForecastViewType = createSelector(
-  selectCurrentPlaceState,
-  (state): FORECAST_VIEW_TYPE => {
-    return state.displayForecastType;
-  },
-);
+export const selectForecastViewType = createSelector(selectCurrentPlaceState, (state): FORECAST_VIEW_TYPE => {
+  return state.displayForecastType;
+});
 
-export const selectCurrenPlaceLoadingStatus = createSelector(
-  selectCurrentPlaceState,
-  (state): boolean => {
-    return state.isLocationDataLoading || state.isPredictionDataLoading || state.isCurrentPlaceCurrentWeatherLoading;
-  },
-);
-
+export const selectCurrenPlaceLoadingStatus = createSelector(selectCurrentPlaceState, (state): boolean => {
+  return state.isLocationDataLoading || state.isPredictionDataLoading || state.isCurrentPlaceCurrentWeatherLoading;
+});

@@ -26,7 +26,7 @@ export class CurrentPlaceEffects {
       exhaustMap(({ key }) =>
         this.currentPlaceService.getPlaceLocationData(key).pipe(
           map((locationInfo) => CurrentPlaceActions.locationInfoLoadedSuccess({ locationInfo })),
-          catchError(() => of(CurrentPlaceActions.currentPlaceWeatherLoadedFailure({ error: 'Error' }))),
+          catchError(() => of(CurrentPlaceActions.locationInfoLoadedFailure({ error: 'Error' }))),
         ),
       ),
     ),
@@ -38,15 +38,16 @@ export class CurrentPlaceEffects {
       exhaustMap(({ key }) =>
         this.currentPlaceService.getCurrentPredictedWeatherByDays(key).pipe(
           map((predictedWeather) => CurrentPlaceActions.predictWeatherByDaysLoadedSuccess({ predictedWeather })),
-          catchError(() => of(CurrentPlaceActions.currentPlaceWeatherLoadedFailure({ error: 'Error' }))),
+          catchError(() => {
+            return of(CurrentPlaceActions.predictWeatherByDaysLoadedFailure({ error: 'Error' }));
+          }),
         ),
       ),
     ),
   );
-
   constructor(
     private actions$: Actions,
     private currentPlaceService: CurrentPlaceService,
-    private publicService: PublicService
+    private publicService: PublicService,
   ) {}
 }

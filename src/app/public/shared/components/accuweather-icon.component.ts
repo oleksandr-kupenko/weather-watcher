@@ -4,10 +4,7 @@ import { Component, Input } from '@angular/core';
   selector: 'app-accuweather-icon',
   standalone: true,
   imports: [],
-  template: `<img
-    [src]="'https://apidev.accuweather.com/developers/Media/Default/WeatherIcons/' + iconNumber + '-s.png'"
-    [alt]="alt"
-  /> `,
+  template: `<img [src]="'assets/img/weather-icons/' + iconNumber + '.png'" [alt]="alt" /> `,
   styles: [
     `
       :host {

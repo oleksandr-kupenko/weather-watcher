@@ -1,8 +1,7 @@
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { delay, Observable, of, take, tap } from 'rxjs';
+import { Observable, take, tap } from 'rxjs';
 import { inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { PublicService } from '../public.service';
 import { selectFavoritesPlaces } from './store/favorites.selectors';
 import { map } from 'rxjs/operators';
 import { FavoritesActions } from './store/favorites.actions';

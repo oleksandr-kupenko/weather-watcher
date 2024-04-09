@@ -33,7 +33,7 @@ export class SearchAutocompleteComponent implements OnInit {
   public isDataLoading = false;
 
   public searchControl = new FormControl('', { validators: [correctSymbolsValidator()], updateOn: 'change' });
-  public predictions!: Observable<PlaceAutoCompletePrediction[]>;
+  public predictions$!: Observable<PlaceAutoCompletePrediction[]>;
 
   constructor(private searchAutocompleteService: SearchAutocompleteService) {}
 
@@ -51,7 +51,7 @@ export class SearchAutocompleteComponent implements OnInit {
   }
 
   private initAutocomplete() {
-    this.predictions = this.searchControl.valueChanges.pipe(
+    this.predictions$ = this.searchControl.valueChanges.pipe(
       map((value: PlaceAutoCompletePrediction | string | null) => {
         if (!value || this.searchControl.invalid) {
           return null;
@@ -66,9 +66,10 @@ export class SearchAutocompleteComponent implements OnInit {
       tap(() => (this.isDataLoading = true)),
       debounceTime(500),
       switchMap((value) => {
-        return this.searchAutocompleteService
-          .getPlacePredictions(value)
-          .pipe(finalize(() => (this.isDataLoading = false)));
+        return this.searchAutocompleteService.getPlacePredictions(value).pipe(
+          tap((data) => console.log(data)),
+          finalize(() => (this.isDataLoading = false)),
+        );
       }),
     );
   }
