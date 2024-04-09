@@ -10,7 +10,7 @@ const defaultPlace: PlaceWithCurrentWeather = {
   name: 'Kyiv',
   iconNumber: null,
   countryData: { ID: 'ua', LocalizedName: 'Ukraine' },
-  description: null
+  description: null,
 };
 export interface CurrentPlaceState {
   isCurrentPlaceCurrentWeatherLoading: boolean;
@@ -26,12 +26,12 @@ export const initialState: CurrentPlaceState = {
   isLocationDataLoading: false,
   placeCurrentData: defaultPlace,
   predictionDataByDays: null,
-  displayForecastType: FORECAST_VIEW_TYPE.cards
+  displayForecastType: FORECAST_VIEW_TYPE.cards,
 };
 
 export const currentPlaceReducer: ActionReducer<CurrentPlaceState> = createReducer(
   initialState,
-  on(CurrentPlaceActions.setCurrentPlace, (state, { key, name, countryData}) => ({
+  on(CurrentPlaceActions.setCurrentPlace, (state, { key, name, countryData }) => ({
     ...state,
     placeCurrentData: {
       ...state.placeCurrentData,
@@ -43,27 +43,31 @@ export const currentPlaceReducer: ActionReducer<CurrentPlaceState> = createReduc
 
   //location
   on(CurrentPlaceActions.getCurrentPlaceLocationInfo, (state) => ({ ...state, isLocationDataLoading: true })),
-  on(CurrentPlaceActions.locationInfoLoadedSuccess, (state, {locationInfo}) => ({
+  on(CurrentPlaceActions.locationInfoLoadedSuccess, (state, { locationInfo }) => ({
     ...state,
     placeCurrentData: {
       ...state.placeCurrentData,
       name: locationInfo.LocalizedName,
       countryData: { ID: locationInfo.Country.ID, LocalizedName: locationInfo.Country.LocalizedName },
-      key: locationInfo.Key
+      key: locationInfo.Key,
     },
-    isLocationDataLoading: false, })),
-  on(CurrentPlaceActions.locationInfoLoadedFailure, (state) => ({ ...state, isLocationDataLoading: false})),
+    isLocationDataLoading: false,
+  })),
+  on(CurrentPlaceActions.locationInfoLoadedFailure, (state) => ({ ...state, isLocationDataLoading: false })),
 
   //current weather
-  on(CurrentPlaceActions.getCurrentPlaceCurrentWeather, (state) => ({ ...state, isCurrentPlaceCurrentWeatherLoading: true })),
+  on(CurrentPlaceActions.getCurrentPlaceCurrentWeather, (state) => ({
+    ...state,
+    isCurrentPlaceCurrentWeatherLoading: true,
+  })),
   on(CurrentPlaceActions.currentPlaceWeatherLoadedSuccess, (state, { currentWeather }) => ({
     ...state,
     isCurrentPlaceCurrentWeatherLoading: false,
     placeCurrentData: {
-        ...state.placeCurrentData,
-        iconNumber: currentWeather.WeatherIcon,
-        currentTemperature: currentWeather.Temperature.Metric.Value,
-        description: currentWeather.WeatherText,
+      ...state.placeCurrentData,
+      iconNumber: currentWeather.WeatherIcon,
+      currentTemperature: currentWeather.Temperature.Metric.Value,
+      description: currentWeather.WeatherText,
     },
   })),
   on(CurrentPlaceActions.currentPlaceWeatherLoadedFailure, (state) => ({
@@ -75,12 +79,12 @@ export const currentPlaceReducer: ActionReducer<CurrentPlaceState> = createReduc
   on(CurrentPlaceActions.getPredictWeatherByDays, (state) => ({ ...state, isPredictionDataLoading: true })),
   on(CurrentPlaceActions.predictWeatherByDaysLoadedSuccess, (state, { predictedWeather }) => ({
     ...state,
-   predictionDataByDays: predictedWeather,
+    predictionDataByDays: predictedWeather,
+    isPredictionDataLoading: false,
   })),
   on(CurrentPlaceActions.predictWeatherByDaysLoadedFailure, (state) => ({ ...state, isPredictionDataLoading: false })),
 
-
-
+  //change prediction view type
   on(CurrentPlaceActions.setPredictionDataDisplayType, (state, { displayType }) => ({
     ...state,
     displayForecastType: displayType,

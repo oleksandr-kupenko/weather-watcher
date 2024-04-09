@@ -7,17 +7,17 @@ import { selectCurrentPlaceCurrentData } from '../../store/current-place.selecto
 import { MatTooltip } from '@angular/material/tooltip';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PlaceWithCurrentWeather } from '../../../public.interfaces';
+import { EmojiFlagComponent } from '../../../shared/components/emoji-flag.component';
 
 @Component({
   selector: 'current-place-weather',
   standalone: true,
-  imports: [MatIcon, MatIconButton, NgIf, AsyncPipe, NgOptimizedImage, MatTooltip, MatButtonModule],
+  imports: [MatIcon, MatIconButton, NgIf, AsyncPipe, NgOptimizedImage, MatTooltip, MatButtonModule, EmojiFlagComponent],
   templateUrl: './current-weather.component.html',
   styleUrl: './current-weather.component.scss',
 })
 export class CurrentWeatherComponent implements OnInit {
   public currentPlaceWithWeather: PlaceWithCurrentWeather | null = null;
-  favorites: string[] = [];
 
   private destroyRef = inject(DestroyRef);
 
@@ -27,19 +27,12 @@ export class CurrentWeatherComponent implements OnInit {
     this.getCurrentPlaceFromStore();
   }
 
-  getFlagEmoji(countryCode: string) {
-    const codePoints = countryCode
-      .toUpperCase()
-      .split('')
-      .map((char: string) => 127397 + char.codePointAt(0)!);
-    return String.fromCodePoint(...codePoints);
-  }
-
   private getCurrentPlaceFromStore() {
-    this.store.select(selectCurrentPlaceCurrentData)
+    this.store
+      .select(selectCurrentPlaceCurrentData)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((data) => {
-      this.currentPlaceWithWeather = data;
-    });
+        this.currentPlaceWithWeather = data;
+      });
   }
 }

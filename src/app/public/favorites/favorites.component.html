@@ -6,7 +6,9 @@
       @for (place of favoritePlaces; track favoritePlaces) {
         <mat-card class="weather-card">
           <mat-card-header>
-            <mat-card-title>{{place.name}}</mat-card-title>
+            <mat-card-title>{{place.name}}
+            <app-emoji-flag [countryCode]="place.countryData.ID" [tooltip]="place.countryData.LocalizedName"></app-emoji-flag>
+            </mat-card-title>
             <mat-card-subtitle>{{ place.description }}</mat-card-subtitle>
           </mat-card-header>
           <mat-card-content>

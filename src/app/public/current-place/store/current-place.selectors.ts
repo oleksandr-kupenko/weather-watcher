@@ -26,3 +26,11 @@ export const selectForecastViewType = createSelector(
     return state.displayForecastType;
   },
 );
+
+export const selectCurrenPlaceLoadingStatus = createSelector(
+  selectCurrentPlaceState,
+  (state): boolean => {
+    return state.isLocationDataLoading || state.isPredictionDataLoading || state.isCurrentPlaceCurrentWeatherLoading;
+  },
+);
+

@@ -13,11 +13,7 @@
       <div class="current-weather__city--info">
         <h2>
           {{ currentPlaceWithWeather.name }}
-          <span
-            class="current-weather__city-info--info"
-            [matTooltip]="currentPlaceWithWeather.countryData.LocalizedName"
-          >{{ getFlagEmoji(currentPlaceWithWeather.countryData.ID) }}</span
-          >
+          <app-emoji-flag [tooltip]="currentPlaceWithWeather.countryData.LocalizedName" [countryCode]="currentPlaceWithWeather.countryData.ID"></app-emoji-flag>
         </h2>
         <div class="current-weather__city--values">
           <p>

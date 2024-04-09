@@ -21,8 +21,14 @@ import { FavoritesActions } from '../favorites/store/favorites.actions';
 import { selectIsFavorite } from '../favorites/store/favorites.selectors';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FORECAST_VIEW_TYPE } from './components/prediction-weather-chart/prediction-weather-chart.interfaces';
-import { selectCurrentPlaceCurrentData, selectForecastViewType } from './store/current-place.selectors';
+import {
+  selectCurrenPlaceLoadingStatus,
+  selectCurrentPlaceCurrentData,
+  selectForecastViewType
+} from './store/current-place.selectors';
 import { PlaceWithCurrentWeather } from '../public.interfaces';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -41,12 +47,14 @@ import { PlaceWithCurrentWeather } from '../public.interfaces';
     SearchAutocompleteComponent,
     CurrentWeatherComponent,
     PredictionWeatherComponent,
-    PredictionWeatherChartComponent
+    PredictionWeatherChartComponent,
+    MatProgressSpinner
   ],
   templateUrl: './current-place.component.html',
   styleUrl: './current-place.component.scss',
 })
 export class CurrentPlaceComponent implements OnInit{
+  public isLoading$: Observable<boolean> = this.store.select(selectCurrenPlaceLoadingStatus);
   public isForecastChart = false;
   public isFavoritePlace = false;
   public forecastDisplayType: FORECAST_VIEW_TYPE = FORECAST_VIEW_TYPE.cards;

@@ -2,6 +2,10 @@ mat-form-field {
   width: 100%;
   margin-bottom: 20px;
 
+  @media screen and (max-width: 576px) {
+    margin-bottom: 0;
+  }
+
   mat-spinner {
     opacity: 0.5;
     margin-right: 20px;

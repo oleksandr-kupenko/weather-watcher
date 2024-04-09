@@ -8,31 +8,41 @@ import { MatIconModule } from '@angular/material/icon';
 import { selectFavoriteLoadingStatus, selectFavoritesPlaces } from './store/favorites.selectors';
 import { PlaceWithCurrentWeather } from '../public.interfaces';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AccuweatherIconComponent } from '../shared/components/accuweather-icon/accuweather-icon.component';
+import { AccuweatherIconComponent } from '../shared/components/accuweather-icon.component';
 import { MatButtonModule } from '@angular/material/button';
 import { CurrentPlaceActions } from '../current-place/store/current-place.actions';
 import { selectCurrentPlaceCurrentData } from '../current-place/store/current-place.selectors';
 import { take } from 'rxjs';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { EmojiFlagComponent } from '../shared/components/emoji-flag.component';
 
 @Component({
   selector: 'app-favorites',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatIconModule, AccuweatherIconComponent, MatButtonModule, RouterLink, MatProgressSpinner],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatIconModule,
+    AccuweatherIconComponent,
+    MatButtonModule,
+    RouterLink,
+    MatProgressSpinner,
+    EmojiFlagComponent,
+  ],
   templateUrl: './favorites.component.html',
-  styleUrl: './favorites.component.scss'
+  styleUrl: './favorites.component.scss',
 })
 export class FavoritesComponent implements OnInit {
-  public favoritePlaces: PlaceWithCurrentWeather[] = this.route.snapshot.data['savedFavorites'];
   public isLoading = this.store.select(selectFavoriteLoadingStatus);
 
- private destroyRef = inject(DestroyRef);
+  public favoritePlaces: PlaceWithCurrentWeather[] = this.route.snapshot.data['savedFavorites'];
+
+  private destroyRef = inject(DestroyRef);
   constructor(
     private store: Store,
     private route: ActivatedRoute,
-    private router: Router
-    ) {
-  }
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.subscribeToUpdatesFavoritePlaces();
@@ -47,23 +57,27 @@ export class FavoritesComponent implements OnInit {
   }
 
   public handleOpenDetails(place: PlaceWithCurrentWeather) {
-    this.store.dispatch(CurrentPlaceActions.setCurrentPlace({ key: place.key, name: place.name, countryData: place.countryData }));
+    this.store.dispatch(
+      CurrentPlaceActions.setCurrentPlace({ key: place.key, name: place.name, countryData: place.countryData }),
+    );
     this.router.navigate(['/home', place.key]);
   }
 
   private subscribeToUpdatesFavoritePlaces() {
-    this.store.select(selectFavoritesPlaces)
+    this.store
+      .select(selectFavoritesPlaces)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(places => {
-      this.favoritePlaces = places;
-    })
+      .subscribe((places) => {
+        this.favoritePlaces = places;
+      });
   }
 
   private subscribeToUpdatesCurrentPlace() {
-    this.store.select(selectCurrentPlaceCurrentData)
+    this.store
+      .select(selectCurrentPlaceCurrentData)
       .pipe(take(1))
-      .subscribe(place => {
-      console.log('NEW PLACE', place)
-    })
+      .subscribe((place) => {
+        console.log('NEW PLACE', place);
+      });
   }
 }

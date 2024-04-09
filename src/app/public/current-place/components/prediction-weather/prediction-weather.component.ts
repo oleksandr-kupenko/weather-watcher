@@ -7,8 +7,7 @@ import { selectCurrentPlacePredictedData } from '../../store/current-place.selec
 import { MatTooltip } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AccuweatherIconComponent } from '../../../shared/components/accuweather-icon/accuweather-icon.component';
-
+import { AccuweatherIconComponent } from '../../../shared/components/accuweather-icon.component';
 
 @Component({
   selector: 'app-prediction-weather',
@@ -17,7 +16,7 @@ import { AccuweatherIconComponent } from '../../../shared/components/accuweather
   templateUrl: './prediction-weather.component.html',
   styleUrl: './prediction-weather.component.scss',
 })
-export class PredictionWeatherComponent implements OnInit{
+export class PredictionWeatherComponent implements OnInit {
   public forecast: WeatherForecast | null = null;
 
   private destroyRef = inject(DestroyRef);
@@ -25,12 +24,11 @@ export class PredictionWeatherComponent implements OnInit{
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    this.store.select(selectCurrentPlacePredictedData)
+    this.store
+      .select(selectCurrentPlacePredictedData)
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(data => {
-      this.forecast = data;
-    })
+      .subscribe((data) => {
+        this.forecast = data;
+      });
   }
-
-
 }
