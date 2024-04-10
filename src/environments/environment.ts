@@ -1,5 +1,5 @@
-export const environment = {
+export const environment: { production: boolean; apiKey: string[] | string; apiBaseUrl: string } = {
   production: false,
-  apiKey: '2',
+  apiKey: ['some_key'],
   apiBaseUrl: 'https://dataservice.accuweather.com',
 };
